@@ -70,8 +70,11 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     let success = false;
+    // streamText oculta el error real de OpenAI tras "No output generated": lo guardamos aquí.
+    let streamError: unknown = null;
     try {
       const result = streamText({
+        onError: ({ error }) => { streamError = error; },
         model,
         instructions: `${INSTRUCTIONS}\n\nRédige "type", "explication" et "recommandations" en ${langue}. "extrait" reste en français.`,
         messages: [
@@ -92,7 +95,8 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
       }
       success = true;
       return { correction, erreur: null, evaluationId: reservation.data };
-    } catch (e) {
+    } catch (caught) {
+      const e = streamError ?? caught;
       const status = (e as { statusCode?: number }).statusCode;
       console.error("Correction IA échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
       if (status === 403) setResponseStatus(403);
@@ -131,8 +135,11 @@ export const corrigerRedactionImage = createServerFn({ method: "POST" })
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     let success = false;
+    // streamText oculta el error real de OpenAI tras "No output generated": lo guardamos aquí.
+    let streamError: unknown = null;
     try {
       const result = streamText({
+        onError: ({ error }) => { streamError = error; },
         model,
         instructions: `${INSTRUCTIONS}
 La dissertation de l'élève est fournie en PHOTOS ou en PDF (texte manuscrit ou imprimé), une page par fichier, dans l'ordre. Lis chaque page avec le plus grand soin, ligne par ligne, avant de transcrire.
@@ -173,7 +180,8 @@ Rédige "type", "explication" et "recommandations" en ${langue}. "extrait" et "t
       }
       success = true;
       return { correction, erreur: null, evaluationId: reservation.data };
-    } catch (e) {
+    } catch (caught) {
+      const e = streamError ?? caught;
       const status = (e as { statusCode?: number }).statusCode;
       console.error("Correction IA (image) échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
       if (status === 403) setResponseStatus(403);

@@ -26,8 +26,10 @@ export function evaluationErrorMessage(error: unknown): string | null {
   try {
     const body = JSON.parse((error as { responseBody?: string }).responseBody ?? "{}");
     const message = body.message ?? body.error?.message;
-    return typeof message === "string" ? message : null;
-  } catch { return null; }
+    if (typeof message === "string") return message;
+  } catch { /* cuerpo no JSON */ }
+  const fallback = (error as { message?: unknown }).message;
+  return typeof fallback === "string" && fallback ? fallback.slice(0, 200) : null;
 }
 
 export function evaluationErrorCode(error: unknown): string {
