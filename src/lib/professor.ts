@@ -1,10 +1,12 @@
 import { z } from "zod";
 
-export type ProfessorAccess = { allowed: boolean; denial: string | null };
+export const FREE_PROFESSOR_REVIEWS = 2;
+export type ProfessorAccess = { allowed: boolean; denial: string | null; remaining: number; paid: boolean; busy: boolean };
 export function parseProfessorAccess(value: unknown): ProfessorAccess {
-  if (!value || typeof value !== "object") return { allowed: false, denial: null };
-  const access = value as Record<string, unknown>;
-  return { allowed: access.allowed === true, denial: typeof access.denial === "string" ? access.denial : null };
+  const access = value && typeof value === "object" ? value as Record<string, unknown> : {};
+  return { allowed: access.allowed === true, denial: typeof access.denial === "string" ? access.denial : null,
+    remaining: typeof access.remaining === "number" ? Math.max(0, Math.min(FREE_PROFESSOR_REVIEWS, access.remaining)) : 0,
+    paid: access.paid === true, busy: access.busy === true };
 }
 
 export const professorFeedbackSchema = z.object({

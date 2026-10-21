@@ -107,6 +107,38 @@ export type Database = {
           },
         ]
       }
+      professor_review_usage: {
+        Row: {
+          created_at: string
+          id: string
+          source: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          source: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          source?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professor_review_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -182,6 +214,10 @@ export type Database = {
         Args: { _id: string; _success: boolean; _user_id: string }
         Returns: undefined
       }
+      finish_professor_review: {
+        Args: { _id: string; _payload?: Json; _user_id: string }
+        Returns: undefined
+      }
       get_professor_access: { Args: never; Returns: Json }
       has_role: {
         Args: {
@@ -195,6 +231,7 @@ export type Database = {
         Returns: undefined
       }
       reserve_evaluation: { Args: never; Returns: string }
+      reserve_professor_review: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "admin" | "user"

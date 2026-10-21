@@ -8,7 +8,7 @@ import { useLanguage } from "./LanguageProvider";
 import { Button } from "./ui/button";
 import { getProfessorAccess, reviewWithProfessor } from "@/lib/professor.functions";
 import type { ProfessorFeedback } from "@/lib/professor";
-import { listProgress, saveProgress, importProgress } from "@/lib/progress.functions";
+import { listProgress, importProgress } from "@/lib/progress.functions";
 import { ownedProfessorRecords } from "@/lib/progress-migration";
 import { fitsRequest, prepareUpload, UploadError } from "@/lib/upload-compress";
 
@@ -18,10 +18,9 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
   const accessFn = useServerFn(getProfessorAccess);
   const reviewFn = useServerFn(reviewWithProfessor);
   const listFn = useServerFn(listProgress);
-  const saveFn = useServerFn(saveProgress);
   const importFn = useServerFn(importProgress);
   const [history, setHistory] = useState<{ id: string; feedback: ProfessorFeedback; language: string; date: string }[]>([]);
-  const { data: access, isError } = useQuery({ queryKey: ["professor-access", user?.id], queryFn: () => accessFn(), enabled: Boolean(user) });
+  const { data: access, isError, refetch: refreshAccess } = useQuery({ queryKey: ["professor-access", user?.id], queryFn: () => accessFn(), enabled: Boolean(user) });
   const [reviewId, setReviewId] = useState<string | null>(null);
   const [files, setFiles] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<ProfessorFeedback | null>(null);
@@ -50,36 +49,36 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
   }, [user?.id, language, listFn, importFn]);
 
   async function submit() {
-    if (!access?.allowed || access.denial || busy) return;
+    if (!access?.allowed || access.denial || access.busy || busy) return;
     const media = files.length ? files : images;
     if (!media.length) return;
     setBusy(true); setError(null);
     try {
       const result = await reviewFn({ data: { images: media, enonce, extraits, langue: language } });
       if (!result.feedback) {
-        setError(result.message ?? t(result.error === "paid_required" ? "Disponible con un plan mensual o anual activo." : "No se pudo obtener la orientación del profesor."));
+        setError(result.message ?? t(result.error === "paid_required" ? "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo." : result.error === "review_busy" ? "Ya hay una revisión en curso. Espera a que termine." : result.error === "save_failed" ? "No se pudo guardar la revisión. No se descontó una consulta." : "No se pudo obtener la orientación del profesor."));
         return;
       }
       setFeedback(result.feedback);
-      const id = `${reviewId ?? crypto.randomUUID()}.${language}`;
-      const saved = { feedback: result.feedback, language, date: new Date().toISOString() };
-      try {
-        await saveFn({ data: { kind: "professor", id, payload: saved } });
+      if (result.id && result.saved) {
+        const id = result.id;
+        const saved = result.saved;
         setHistory(previous => [{ id, ...saved }, ...previous.filter(row => row.id !== id)]);
-      } catch { setError(t("La orientación se muestra, pero no se pudo guardar en tu cuenta.")); }
+      }
     } catch { setError(t("No se pudo obtener la orientación del profesor.")); }
-    finally { setBusy(false); }
+    finally { setBusy(false); void refreshAccess(); }
   }
 
   return <section className="border-b border-border py-5" aria-label={t("Profesor de literatura")}>
     <div className="flex flex-wrap items-center justify-between gap-3">
       <h2 className="flex items-center gap-2 text-lg font-semibold"><GraduationCap className="h-5 w-5 text-accent" />{t("Profesor de literatura")}</h2>
-      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground"><LockKeyhole className="h-3.5 w-3.5" />{t("Plan de pago")}</span>
+      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground"><LockKeyhole className="h-3.5 w-3.5" />{access?.paid ? t("Plan de pago") : t("Dos revisiones gratis")}</span>
     </div>
     <p className="mt-3 text-sm text-muted-foreground">{t("Cualquier disertación, independiente del tema y los textos del examen.")}</p>
+    {access && !access.paid && <p className="mt-2 text-sm font-medium text-accent">{t("Revisiones gratuitas disponibles: {count}", { count: access.remaining })}</p>}
     <div className="mt-4 space-y-4">
     {!access?.allowed ? <div className="mt-3 flex flex-wrap items-center gap-3">
-      <p className="text-sm text-muted-foreground">{t(isError ? "No se pudo comprobar el acceso al profesor." : access ? "Disponible con un plan mensual o anual activo." : "Procesando…")}</p>
+      <p className="text-sm text-muted-foreground">{t(isError ? "No se pudo comprobar el acceso al profesor." : access ? "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo." : "Procesando…")}</p>
       <Button asChild variant="outline" size="sm"><Link to="/planes">{t("Planes")}</Link></Button>
     </div> : null}
       <input ref={fileRef} className="hidden" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple aria-label={t("Archivos para el profesor")} disabled={busy} onChange={async (event) => {
@@ -95,7 +94,7 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
       }} />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" disabled={busy} onClick={() => fileRef.current?.click()}><Upload />{t("Subir fotos o PDF")}</Button>
-        <Button disabled={busy || !access?.allowed || Boolean(access?.denial) || !(files.length || images.length)} onClick={() => void submit()}>{busy ? <Loader2 className="animate-spin" /> : <GraduationCap />}{t(busy ? "El profesor está revisando…" : "Pedir orientación")}</Button>
+        <Button disabled={busy || access?.busy || !access?.allowed || Boolean(access?.denial) || !(files.length || images.length)} onClick={() => void submit()}>{busy ? <Loader2 className="animate-spin" /> : <GraduationCap />}{t(busy ? "El profesor está revisando…" : "Pedir orientación")}</Button>
       </div>
       {files.length > 0 && <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{files.map((file, index) => <figure key={index} className="min-w-0 overflow-hidden rounded-md border border-border bg-background">
         {file.startsWith("data:application/pdf") ? <div className="flex aspect-[3/4] items-center justify-center bg-muted"><FileText className="h-12 w-12 text-muted-foreground" aria-label="PDF" /></div> : <img src={file} alt={`${t("Foto de la redacción")} ${index + 1}`} className="aspect-[3/4] w-full bg-muted object-contain" />}
