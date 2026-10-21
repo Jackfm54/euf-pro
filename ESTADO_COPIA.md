@@ -21,3 +21,8 @@ Pendiente antes de recibir usuarios (ver GUIA_DESPLIEGUE.md):
 3. Adaptar la carga de fotos y PDF grandes a un almacenamiento privado: Vercel limita cada solicitud a sus funciones a 4,5 MB.
 4. Probar una evaluación real con saldo de OpenAI y confirmar que una falla no descuenta intentos.
 5. Los datos de los usuarios actuales no se trasladan con esta copia; la migración de cuentas existente sigue pendiente.
+
+## Versión 2
+- Las fotos se reducen en el navegador antes de enviarse (máx. 1600 px), para no superar el límite de 4,5 MB por envío de Vercel. PDF hasta 3 MB; si es más grande, se piden fotos de cada página.
+- Las opciones de razonamiento solo se envían a modelos que las aceptan (gpt-5…, o1/o3/o4…). Con `AI_MODEL=gpt-4o-mini` ya no se rechaza la solicitud.
+- `ESQUEMA_BASE_DATOS.sql` se puede ejecutar varias veces y crea el perfil de cuentas registradas antes de instalarlo.

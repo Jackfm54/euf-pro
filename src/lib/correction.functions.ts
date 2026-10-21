@@ -55,7 +55,7 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
     if (!apiKey) return { correction: null, erreur: "config" };
     if (data.texte.trim().split(/\s+/).length < 50) return { correction: null, erreur: "court" };
 
-    const { createEvaluationModel, evaluationErrorCode, evaluationErrorMessage } = await import("./ai-provider.server");
+    const { createEvaluationModel, evaluationErrorCode, evaluationErrorMessage, openAIOptions } = await import("./ai-provider.server");
     const { streamText, Output } = await import("ai");
     const model = createEvaluationModel(apiKey).model;
     const langue = LANGUES[data.langue?.split(/[-_]/)[0]] ?? "espagnol";
@@ -76,15 +76,7 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
         ],
         output: Output.object({ schema: correctionSchema }),
         maxRetries: 0,
-        providerOptions: {
-          openai: {
-            forceReasoning: true,
-            reasoningEffort: "medium",
-            reasoningSummary: "auto",
-            store: false,
-            include: ["reasoning.encrypted_content"],
-          },
-        },
+        providerOptions: { openai: openAIOptions() },
       });
       const correction = await result.output;
       const completion = await supabaseAdmin.rpc("mark_evaluation_ready", { _id: reservation.data, _user_id: context.userId });
@@ -115,7 +107,7 @@ export const corrigerRedactionImage = createServerFn({ method: "POST" })
       if (img.length > 20_000_000) return { correction: null, erreur: "grande" };
     }
 
-    const { createEvaluationModel, evaluationErrorCode, evaluationErrorMessage } = await import("./ai-provider.server");
+    const { createEvaluationModel, evaluationErrorCode, evaluationErrorMessage, openAIOptions } = await import("./ai-provider.server");
     const { streamText, Output } = await import("ai");
     const model = createEvaluationModel(apiKey).model;
     const langue = LANGUES[data.langue?.split(/[-_]/)[0]] ?? "espagnol";
@@ -155,15 +147,7 @@ Rédige "type", "explication" et "recommandations" en ${langue}. "extrait" et "t
         ],
         output: Output.object({ schema: correctionImageSchema }),
         maxRetries: 0,
-        providerOptions: {
-          openai: {
-            forceReasoning: true,
-            reasoningEffort: "medium",
-            reasoningSummary: "auto",
-            store: false,
-            include: ["reasoning.encrypted_content"],
-          },
-        },
+        providerOptions: { openai: openAIOptions() },
       });
       const correction = await result.output;
       if (!correction.texteTranscrit.trim()) return { correction: null, erreur: "illisible" };

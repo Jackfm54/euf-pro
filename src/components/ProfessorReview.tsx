@@ -10,6 +10,7 @@ import { getProfessorAccess, reviewWithProfessor } from "@/lib/professor.functio
 import type { ProfessorFeedback } from "@/lib/professor";
 import { listProgress, saveProgress, importProgress } from "@/lib/progress.functions";
 import { ownedProfessorRecords } from "@/lib/progress-migration";
+import { fitsRequest, prepareUpload, UploadError } from "@/lib/upload-compress";
 
 export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce: string; extraits: string; essayId: string; images: string[] }) {
   const { user } = useAuth();
@@ -86,9 +87,11 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
         if (selected.some(file => file.size > 10 * 1024 * 1024) || selected.length + files.length > 8) { setError(t("Máximo 8 fotos o PDF de 10 MB cada uno.")); return; }
         if (selected.some(file => !["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type))) { setError(t("El archivo no es una imagen ni un PDF válido.")); return; }
         try {
-          const loaded = await Promise.all(selected.map(file => new Promise<string>((resolve, reject) => { const reader = new FileReader(); reader.onload = () => typeof reader.result === "string" ? resolve(reader.result) : reject(); reader.onerror = reject; reader.readAsDataURL(file); })));
-          setFiles(previous => [...previous, ...loaded].slice(0, 8)); setReviewId(crypto.randomUUID()); setFeedback(null); setError(null);
-        } catch { setError(t("No se pudo obtener la orientación del profesor.")); }
+          const loaded = await Promise.all(selected.map(prepareUpload));
+          const next = [...files, ...loaded].slice(0, 8);
+          if (!fitsRequest(next)) { setError(t("Los archivos superan el tamaño permitido. Envía menos páginas o fotos más ligeras.")); return; }
+          setFiles(next); setReviewId(crypto.randomUUID()); setFeedback(null); setError(null);
+        } catch (err) { setError(t(err instanceof UploadError && err.code === "pdf_grande" ? "El PDF es demasiado grande (máximo 3 MB). Envía una foto de cada página." : "El archivo no es una imagen ni un PDF válido.")); }
       }} />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" disabled={busy} onClick={() => fileRef.current?.click()}><Upload />{t("Subir fotos o PDF")}</Button>

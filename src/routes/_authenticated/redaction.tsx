@@ -10,6 +10,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { corrigerRedaction, corrigerRedactionImage, type Correction } from "@/lib/correction.functions";
 import { AppShell } from "@/components/AppShell";
 import { ProfessorReview } from "@/components/ProfessorReview";
+import { fitsRequest, prepareUpload, UploadError } from "@/lib/upload-compress";
 import { ExtraitsLecture } from "@/components/ExtraitsLecture";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -278,10 +279,25 @@ function RedactionContent() {
           toast.error(t("La foto es demasiado grande (máximo 10 MB)."));
           continue;
         }
-        const reader = new FileReader();
-        reader.onload = () =>
-          setImagenes((prev) => (prev.length >= 8 ? prev : [...prev, reader.result as string]));
-        reader.readAsDataURL(file);
+        void prepareUpload(file)
+          .then((data) =>
+            setImagenes((prev) => {
+              if (prev.length >= 8) return prev;
+              const next = [...prev, data];
+              if (!fitsRequest(next)) {
+                toast.error(t("Los archivos superan el tamaño permitido. Envía menos páginas o fotos más ligeras."));
+                return prev;
+              }
+              return next;
+            }),
+          )
+          .catch((err) =>
+            toast.error(
+              t(err instanceof UploadError && err.code === "pdf_grande"
+                ? "El PDF es demasiado grande (máximo 3 MB). Envía una foto de cada página."
+                : "El archivo no es una imagen ni un PDF válido."),
+            ),
+          );
       }
     },
     [t],

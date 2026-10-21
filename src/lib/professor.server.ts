@@ -1,5 +1,5 @@
 import { streamText, Output } from "ai";
-import { createEvaluationModel } from "./ai-provider.server.ts";
+import { createEvaluationModel, openAIOptions } from "./ai-provider.server.ts";
 import { professorDocumentContext, professorFeedbackSchema, type ProfessorInput } from "./professor.ts";
 
 function sdkImage(data: string) {
@@ -25,7 +25,7 @@ Réponds en ${language}, sauf les extraits cités qui restent en français. Four
     ] }],
     output: Output.object({ schema: professorFeedbackSchema }),
     maxRetries: 0,
-    providerOptions: { openai: { forceReasoning: true, reasoningEffort: "medium", reasoningSummary: "auto", store: false, include: ["reasoning.encrypted_content"] } },
+    providerOptions: { openai: openAIOptions() },
   });
   const feedback = await result.output;
   return { feedback };

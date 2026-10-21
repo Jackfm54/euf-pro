@@ -4,6 +4,18 @@ export function resolveAIModel() {
   return process.env.AI_MODEL ?? "gpt-4o-mini";
 }
 
+// Solo los modelos con razonamiento (gpt-5…, o1/o3/o4…) aceptan las opciones
+// de razonamiento; con gpt-4o / gpt-4o-mini OpenAI rechaza la solicitud.
+export function supportsReasoning(model: string): boolean {
+  return /^(gpt-5|o\d)/.test(model.trim().toLowerCase());
+}
+
+export function openAIOptions(model: string = resolveAIModel()) {
+  return supportsReasoning(model)
+    ? { forceReasoning: true, reasoningEffort: "medium" as const, reasoningSummary: "auto" as const, store: false, include: ["reasoning.encrypted_content"] }
+    : { store: false };
+}
+
 export function createEvaluationModel(apiKey: string) {
   const provider = createOpenAI({ apiKey });
   return { model: provider.responses(resolveAIModel()) };
