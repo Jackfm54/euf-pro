@@ -52,7 +52,10 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ texte: z.string().max(20000), enonce: z.string().max(5000), extraits: z.string().max(20000), langue: z.enum(["es","fr","ar"]) }).parse(input))
   .handler(async ({ data, context }): Promise<{ correction: Correction | null; erreur: string | null; message?: string | null; evaluationId?: string }> => {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return { correction: null, erreur: "config" };
+    if (!apiKey) {
+      console.error("OPENAI_API_KEY manquante dans cet environnement");
+      return { correction: null, erreur: "config" };
+    }
     if (data.texte.trim().split(/\s+/).length < 50) return { correction: null, erreur: "court" };
 
     const { createEvaluationModel, evaluationErrorCode, evaluationErrorMessage, openAIOptions } = await import("./ai-provider.server");
@@ -61,7 +64,10 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
     const langue = LANGUES[data.langue?.split(/[-_]/)[0]] ?? "espagnol";
 
     const reservation = await context.supabase.rpc("reserve_evaluation");
-    if (reservation.error || !reservation.data) return { correction: null, erreur: reservation.error?.message.includes("plan_required") ? "plan_required" : reservation.error?.message.includes("evaluation_busy") ? "evaluation_busy" : "inconnu" };
+    if (reservation.error || !reservation.data) {
+      if (!/plan_required|evaluation_busy/.test(reservation.error?.message ?? "")) console.error("Réservation échouée", { message: reservation.error?.message ?? "sans identifiant" });
+      return { correction: null, erreur: reservation.error?.message.includes("plan_required") ? "plan_required" : reservation.error?.message.includes("evaluation_busy") ? "evaluation_busy" : "reservation" };
+    }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     let success = false;
     try {
@@ -80,12 +86,15 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
       });
       const correction = await result.output;
       const completion = await supabaseAdmin.rpc("mark_evaluation_ready", { _id: reservation.data, _user_id: context.userId });
-      if (completion.error) throw new Error("Evaluation completion failed");
+      if (completion.error) {
+        console.error("Enregistrement du résultat échoué", { message: completion.error.message });
+        return { correction: null, erreur: "serveur" };
+      }
       success = true;
       return { correction, erreur: null, evaluationId: reservation.data };
     } catch (e) {
       const status = (e as { statusCode?: number }).statusCode;
-      console.error("Correction IA échouée", { status });
+      console.error("Correction IA échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
       if (status === 403) setResponseStatus(403);
       return { correction: null, erreur: evaluationErrorCode(e), message: evaluationErrorMessage(e) };
     } finally {
@@ -98,7 +107,10 @@ export const corrigerRedactionImage = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ images: z.array(z.string().max(20000000)).min(1).max(8), enonce: z.string().max(5000), extraits: z.string().max(20000), langue: z.enum(["es","fr","ar"]) }).parse(input))
   .handler(async ({ data, context }): Promise<{ correction: CorrectionImage | null; erreur: string | null; message?: string | null; evaluationId?: string }> => {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return { correction: null, erreur: "config" };
+    if (!apiKey) {
+      console.error("OPENAI_API_KEY manquante dans cet environnement");
+      return { correction: null, erreur: "config" };
+    }
     const images = (data.images ?? []).slice(0, 8);
     if (images.length === 0) return { correction: null, erreur: "image" };
     for (const img of images) {
@@ -113,7 +125,10 @@ export const corrigerRedactionImage = createServerFn({ method: "POST" })
     const langue = LANGUES[data.langue?.split(/[-_]/)[0]] ?? "espagnol";
 
     const reservation = await context.supabase.rpc("reserve_evaluation");
-    if (reservation.error || !reservation.data) return { correction: null, erreur: reservation.error?.message.includes("plan_required") ? "plan_required" : reservation.error?.message.includes("evaluation_busy") ? "evaluation_busy" : "inconnu" };
+    if (reservation.error || !reservation.data) {
+      if (!/plan_required|evaluation_busy/.test(reservation.error?.message ?? "")) console.error("Réservation échouée", { message: reservation.error?.message ?? "sans identifiant" });
+      return { correction: null, erreur: reservation.error?.message.includes("plan_required") ? "plan_required" : reservation.error?.message.includes("evaluation_busy") ? "evaluation_busy" : "reservation" };
+    }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     let success = false;
     try {
@@ -152,12 +167,15 @@ Rédige "type", "explication" et "recommandations" en ${langue}. "extrait" et "t
       const correction = await result.output;
       if (!correction.texteTranscrit.trim()) return { correction: null, erreur: "illisible" };
       const completion = await supabaseAdmin.rpc("mark_evaluation_ready", { _id: reservation.data, _user_id: context.userId });
-      if (completion.error) throw new Error("Evaluation completion failed");
+      if (completion.error) {
+        console.error("Enregistrement du résultat échoué", { message: completion.error.message });
+        return { correction: null, erreur: "serveur" };
+      }
       success = true;
       return { correction, erreur: null, evaluationId: reservation.data };
     } catch (e) {
       const status = (e as { statusCode?: number }).statusCode;
-      console.error("Correction IA (image) échouée", { status });
+      console.error("Correction IA (image) échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
       if (status === 403) setResponseStatus(403);
       return { correction: null, erreur: evaluationErrorCode(e), message: evaluationErrorMessage(e) };
     } finally {

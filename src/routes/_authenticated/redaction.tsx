@@ -327,15 +327,20 @@ function RedactionContent() {
             "No se pudo leer una redacción en las fotos. Sube solo fotos de tu texto, con buena luz y de frente.",
           limite: "Demasiadas correcciones seguidas. Espera un minuto e inténtalo de nuevo.",
           credits: "La corrección automática no está disponible ahora (créditos de IA agotados).",
+          config: "La IA no está configurada: revisa la clave de OpenAI en Vercel y vuelve a publicar.",
+          reservation: "No se pudo reservar tu evaluación. Revisa la base de datos e inténtalo de nuevo.",
+          serveur: "No se pudo guardar el resultado. Revisa la clave de servicio de la base de datos en Vercel.",
         };
-        toast.error(r.message ?? t(msg[r.erreur ?? ""] ?? "No se pudo corregir la foto. Inténtalo de nuevo."));
+        const base = t(msg[r.erreur ?? ""] ?? "No se pudo corregir la foto. Inténtalo de nuevo.");
+        toast.error(r.message ? `${base} (${r.message})` : `${base} [${r.erreur ?? "?"}]`);
         return;
       }
       const { texteTranscrit, ...corr } = r.correction;
       if (!r.evaluationId) throw new Error("Missing evaluation delivery ID");
       await acceptEvaluation(corr, texteTranscrit, r.evaluationId);
-    } catch {
-      toast.error(t("No se pudo corregir la foto. Inténtalo de nuevo."));
+    } catch (err) {
+      const detail = err instanceof Error ? err.message.slice(0, 120) : "";
+      toast.error(`${t("No se pudo corregir la foto. Inténtalo de nuevo.")}${detail ? ` (${detail})` : ""}`);
     } finally {
       void queryClient.invalidateQueries({ queryKey: ["account"] });
       setEnCorrection(false);
