@@ -1,0 +1,32 @@
+{
+  "id": "/",
+  "name": "EUF pro",
+  "short_name": "EUF pro",
+  "description": "Préparation à l’épreuve uniforme de français à Montréal.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "fr",
+  "theme_color": "#004b8d",
+  "background_color": "#f5faff",
+  "icons": [
+    {
+      "src": "/icons/euf-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/euf-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/euf-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

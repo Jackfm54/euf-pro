@@ -1,0 +1,8 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { getAdministration } from "@/lib/account.functions";
+import { useLanguage } from "@/components/LanguageProvider";
+import { AppShell } from "@/components/AppShell";
+const options=queryOptions({queryKey:["administration"],queryFn:()=>getAdministration()});
+export const Route=createFileRoute("/_authenticated/administracion")({loader:({context})=>context.queryClient.ensureQueryData(options),head:()=>({meta:[{title:"Administración | ÉUF"},{name:"description",content:"Administración segura de las cuentas de ÉUF."},{property:"og:title",content:"Administración ÉUF"},{property:"og:description",content:"Acceso exclusivo para administradores autorizados."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),errorComponent:()=>{const {t}=useLanguage();return <AppShell><h1 className="text-2xl font-bold">{t("Acceso no autorizado")}</h1></AppShell>;},component:AdminPage});
+function AdminPage(){const {data}=useSuspenseQuery(options);const {t,locale}=useLanguage();return <AppShell><h1 className="text-3xl font-bold">{t("Administración")}</h1><div className="mt-6 overflow-x-auto"><table className="w-full text-start text-sm"><thead><tr className="border-b"><th className="py-3 text-start">{t("Nombre")}</th><th className="py-3 text-start">{t("Fecha")}</th></tr></thead><tbody>{data.map(p=><tr key={p.id} className="border-b"><td className="py-3">{p.display_name||"—"}</td><td>{new Date(p.created_at).toLocaleDateString(locale)}</td></tr>)}</tbody></table></div></AppShell>;}
