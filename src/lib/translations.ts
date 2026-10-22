@@ -11,7 +11,7 @@ export function isLanguage(value: unknown): value is Language {
 export const translations: Record<string, Record<Language, string>> = {
   "Dos revisiones gratis": { es: "Una revisión gratis", fr: "Une révision gratuite", ar: "مراجعة مجانية واحدة" },
   "Revisiones gratuitas disponibles: {count}": { es: "Revisiones gratuitas disponibles: {count}", fr: "Révisions gratuites disponibles : {count}", ar: "المراجعات المجانية المتبقية: {count}" },
-  "Has utilizado tu revision gratis. Necesitas un forfait activo.": { es: "Has utilizado tu revision gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé votre révision gratuites. Un forfait actif est requis.", ar: "لقد استخدمت المراجعتين المجانيتين. مراجعة مجانية واحدة." },
+  "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo.": { es: "Has utilizado tu revisión gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé votre révision gratuite. Un forfait actif est requis.", ar: "لقد استخدمت مراجعتك المجانية. تحتاج إلى خطة نشطة." },
   "Ya hay una revisión en curso. Espera a que termine.": { es: "Ya hay una revisión en curso. Espera a que termine.", fr: "Une révision est déjà en cours. Attendez la fin.", ar: "هناك مراجعة قيد التنفيذ. انتظر حتى تنتهي." },
   "No se pudo guardar la revisión. No se descontó una consulta.": { es: "No se pudo guardar la revisión. No se descontó una consulta.", fr: "Impossible d’enregistrer la révision. Aucune consultation n’a été déduite.", ar: "تعذر حفظ المراجعة. لم تُخصم أي استشارة." },
   "Primeros pasos": { es: "Primeros pasos", fr: "Premiers pas", ar: "الخطوات الأولى" },
