@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const FREE_PROFESSOR_REVIEWS = 2;
+export const FREE_PROFESSOR_REVIEWS = 1;
 export type ProfessorAccess = { allowed: boolean; denial: string | null; remaining: number; paid: boolean; busy: boolean };
 export function parseProfessorAccess(value: unknown): ProfessorAccess {
   const access = value && typeof value === "object" ? value as Record<string, unknown> : {};
