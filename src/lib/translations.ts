@@ -81,7 +81,7 @@ export const translations: Record<string, Record<Language, string>> = {
   "No se pudo guardar.": {"es": "No se pudo guardar.", "fr": "Enregistrement impossible.", "ar": "تعذر الحفظ."},
   "Perfil guardado.": {"es": "Perfil guardado.", "fr": "Profil enregistré.", "ar": "تم حفظ الملف الشخصي."},
   "Ya hay una evaluación en curso. Espera a que termine.": {"es": "Ya hay una evaluación en curso. Espera a que termine.", "fr": "Une évaluation est déjà en cours. Attendez la fin.", "ar": "هناك تقييم جارٍ. انتظر حتى ينتهي."},
-  "Has utilizado tus dos evaluaciones gratis. Los planes de pago todavía no están disponibles.": {"es": "Has agotado tus evaluaciones disponibles. Los planes de pago todavía no están disponibles.", "fr": "Vous avez épuisé vos évaluations disponibles. Les forfaits payants ne sont pas encore disponibles.", "ar": "لقد استنفدت التقييمات المتاحة. الخطط المدفوعة غير متاحة بعد."},
+  "Has utilizado tu evaluacion gratis. Los planes de pago todavía no están disponibles.": {"es": "Has agotado tus evaluaciones disponibles. Los planes de pago todavía no están disponibles.", "fr": "Vous avez épuisé vos évaluations disponibles. Les forfaits payants ne sont pas encore disponibles.", "ar": "لقد استنفدت التقييمات المتاحة. الخطط المدفوعة غير متاحة بعد."},
   "Revisa tu correo para confirmar tu cuenta.": {"es": "Revisa tu correo para confirmar tu cuenta.", "fr": "Consultez votre courriel pour confirmer votre compte.", "ar": "تحقق من بريدك لتأكيد حسابك."},
   "Evaluaciones gratis restantes: {count}": {"es": "Evaluaciones gratis restantes: {count}", "fr": "Évaluations gratuites restantes : {count}", "ar": "التقييمات المجانية المتبقية: {count}"},
   "Enviar enlace": {"es": "Enviar enlace", "fr": "Envoyer le lien", "ar": "إرسال الرابط"},
