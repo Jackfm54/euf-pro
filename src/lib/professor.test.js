@@ -12,11 +12,11 @@ test("provider access denial remains separate from paid permission", () => {
   expect(parseProfessorAccess({ allowed: true, denial: "Access blocked" }).denial).toBe("Access blocked");
 });
 
-test("Revisión has exactly two free consultations independent of exam usage", () => {
-  expect(FREE_PROFESSOR_REVIEWS).toBe(2);
-  expect(parseProfessorAccess({ allowed: true, remaining: 2 }).remaining).toBe(2);
+test("Revisión has exactly one free consultations independent of exam usage", () => {
+  expect(FREE_PROFESSOR_REVIEWS).toBe(1);
+  expect(parseProfessorAccess({ allowed: true, remaining: 1 }).remaining).toBe(2);
   expect(parseProfessorAccess({ allowed: false, remaining: 0 }).allowed).toBe(false);
-  expect(parseProfessorAccess({ remaining: 999 }).remaining).toBe(2);
+  expect(parseProfessorAccess({ remaining: 999 }).remaining).toBe(1);
 });
 test("failed AI reviews do not consume a consultation", async () => {
   let released = false; let saved = false;
