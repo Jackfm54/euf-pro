@@ -9,9 +9,9 @@ export function isLanguage(value: unknown): value is Language {
   return value === "es" || value === "fr" || value === "ar";
 }
 export const translations: Record<string, Record<Language, string>> = {
-  "Dos revisiones gratis": { es: "Dos revisiones gratis", fr: "Deux révisions gratuites", ar: "مراجعتان مجانيتان" },
+  "Una revision gratis": { es: "Una revision gratis", fr: "Une révision gratuite", ar: "مراجعة مجانية واحدة" },
   "Revisiones gratuitas disponibles: {count}": { es: "Revisiones gratuitas disponibles: {count}", fr: "Révisions gratuites disponibles : {count}", ar: "المراجعات المجانية المتبقية: {count}" },
-  "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo.": { es: "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé vos deux révisions gratuites. Un forfait actif est requis.", ar: "لقد استخدمت المراجعتين المجانيتين. تحتاج إلى خطة نشطة." },
+  "Has utilizado tu revision gratis. Necesitas un forfait activo.": { es: "Has utilizado tu revision gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé votre révision gratuites. Un forfait actif est requis.", ar: "لقد استخدمت المراجعتين المجانيتين. تحتاج إلى خطة نشطة." },
   "Ya hay una revisión en curso. Espera a que termine.": { es: "Ya hay una revisión en curso. Espera a que termine.", fr: "Une révision est déjà en cours. Attendez la fin.", ar: "هناك مراجعة قيد التنفيذ. انتظر حتى تنتهي." },
   "No se pudo guardar la revisión. No se descontó una consulta.": { es: "No se pudo guardar la revisión. No se descontó una consulta.", fr: "Impossible d’enregistrer la révision. Aucune consultation n’a été déduite.", ar: "تعذر حفظ المراجعة. لم تُخصم أي استشارة." },
   "Primeros pasos": { es: "Primeros pasos", fr: "Premiers pas", ar: "الخطوات الأولى" },
