@@ -9,7 +9,7 @@ export function isLanguage(value: unknown): value is Language {
   return value === "es" || value === "fr" || value === "ar";
 }
 export const translations: Record<string, Record<Language, string>> = {
-  "Una revision gratis": { es: "Una revision gratis", fr: "Une révision gratuite", ar: "مراجعة مجانية واحدة" },
+  "Dos revisiones gratis": { es: "Una revisión gratis", fr: "Une révision gratuite", ar: "مراجعة مجانية واحدة" },
   "Revisiones gratuitas disponibles: {count}": { es: "Revisiones gratuitas disponibles: {count}", fr: "Révisions gratuites disponibles : {count}", ar: "المراجعات المجانية المتبقية: {count}" },
   "Has utilizado tu revision gratis. Necesitas un forfait activo.": { es: "Has utilizado tu revision gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé votre révision gratuites. Un forfait actif est requis.", ar: "لقد استخدمت المراجعتين المجانيتين. مراجعة مجانية واحدة." },
   "Ya hay una revisión en curso. Espera a que termine.": { es: "Ya hay una revisión en curso. Espera a que termine.", fr: "Une révision est déjà en cours. Attendez la fin.", ar: "هناك مراجعة قيد التنفيذ. انتظر حتى تنتهي." },
