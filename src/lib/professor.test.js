@@ -14,7 +14,7 @@ test("provider access denial remains separate from paid permission", () => {
 
 test("Revisión has exactly one free consultations independent of exam usage", () => {
   expect(FREE_PROFESSOR_REVIEWS).toBe(1);
-  expect(parseProfessorAccess({ allowed: true, remaining: 1 }).remaining).toBe(2);
+  expect(parseProfessorAccess({ allowed: true, remaining: 1 }).remaining).toBe(1);
   expect(parseProfessorAccess({ allowed: false, remaining: 0 }).allowed).toBe(false);
   expect(parseProfessorAccess({ remaining: 999 }).remaining).toBe(1);
 });
