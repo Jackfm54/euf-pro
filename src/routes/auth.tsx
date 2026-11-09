@@ -36,7 +36,7 @@ function AuthPage() {
         const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: name.trim().slice(0,100) }, emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(next)}` } });
         // Supabase no devuelve error si el correo ya existe: devuelve un usuario sin "identities".
         if (error) setMessage(/rate limit/i.test(error.message) ? "Demasiados intentos. Espera unos minutos e inténtalo de nuevo." : "No se pudo crear la cuenta. Inténtalo de nuevo.");
-        else if (data.user && (data.user.identities?.length ?? 0) === 0) setMessage("Ya existe una cuenta con este correo. Inicia sesión o recupera tu contraseña.");
+        else if (data.user && (data.user.identities?.length ?? 0) === 0) setMessage("La cuenta que intentas crear ya existe. Usa otro correo o inicia sesión.");
         else setMessage("Revisa tu correo para confirmar tu cuenta.");
       } else if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
