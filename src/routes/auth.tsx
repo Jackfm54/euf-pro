@@ -33,11 +33,14 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: name.trim().slice(0,100) }, emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(next)}` } });
-        setMessage(error ? "No se pudo crear la cuenta. Inténtalo de nuevo." : "Revisa tu correo para confirmar tu cuenta.");
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: name.trim().slice(0,100) }, emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(next)}` } });
+        // Supabase no devuelve error si el correo ya existe: devuelve un usuario sin "identities".
+        if (error) setMessage(/rate limit/i.test(error.message) ? "Demasiados intentos. Espera unos minutos e inténtalo de nuevo." : "No se pudo crear la cuenta. Inténtalo de nuevo.");
+        else if (data.user && (data.user.identities?.length ?? 0) === 0) setMessage("Ya existe una cuenta con este correo. Inicia sesión o recupera tu contraseña.");
+        else setMessage("Revisa tu correo para confirmar tu cuenta.");
       } else if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
-        setMessage(error ? "No se pudo enviar el correo. Inténtalo de nuevo." : "Si la cuenta existe, recibirás un enlace para recuperar la contraseña.");
+        setMessage(error ? (/rate limit/i.test(error.message) ? "Demasiados intentos. Espera unos minutos e inténtalo de nuevo." : "No se pudo enviar el correo. Inténtalo de nuevo.") : "Si la cuenta existe, recibirás un enlace para recuperar la contraseña.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) setMessage("Correo o contraseña incorrectos, o cuenta sin confirmar.");
@@ -52,6 +55,9 @@ function AuthPage() {
       {message && <p role="status" className="text-sm text-muted-foreground">{t(message)}</p>}
       <Button type="submit" disabled={busy} className="w-full">{mode === "signup" ? <UserPlus /> : <LogIn />}{t(busy ? "Procesando…" : mode === "signup" ? "Crear cuenta" : mode === "forgot" ? "Enviar enlace" : "Iniciar sesión")}</Button>
     </form>
+    <div className="flex flex-wrap gap-2"><Button variant="link" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setMessage(""); }}>{t(mode === "signup" ? "Iniciar sesión" : "Crear cuenta")}</Button><Button variant="link" onClick={() => { setMode("forgot"); setMessage(""); }}>{t("Recuperar contraseña")}</Button><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>
+  </section></AppShell>;
+}
     <div className="flex flex-wrap gap-2"><Button variant="link" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setMessage(""); }}>{t(mode === "signup" ? "Iniciar sesión" : "Crear cuenta")}</Button><Button variant="link" onClick={() => { setMode("forgot"); setMessage(""); }}>{t("Recuperar contraseña")}</Button><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>
   </section></AppShell>;
 }
