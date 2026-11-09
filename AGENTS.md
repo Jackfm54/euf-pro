@@ -9,3 +9,4 @@
 - Build with Vite and Nitro (node_server by default, NITRO_PRESET=vercel for Vercel); keep server credentials in runtime environment variables, never with the VITE_ prefix.
 
 - Literature tutoring uses a separate owner-readable privileged-write usage ledger; reserve access before AI and atomically save feedback and complete usage, releasing failures. Free access and paid entitlements stay separate from exam allowances.
+-Route all supported photos through shared browser compression before checking the encoded request size in both upload views; original byte size must not prevent compression, while PDF and page-count limits remain enforced.
