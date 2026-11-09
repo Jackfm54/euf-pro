@@ -58,6 +58,3 @@ function AuthPage() {
     <div className="flex flex-wrap gap-2"><Button variant="link" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setMessage(""); }}>{t(mode === "signup" ? "Iniciar sesión" : "Crear cuenta")}</Button><Button variant="link" onClick={() => { setMode("forgot"); setMessage(""); }}>{t("Recuperar contraseña")}</Button><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>
   </section></AppShell>;
 }
-    <div className="flex flex-wrap gap-2"><Button variant="link" onClick={() => { setMode(mode === "signup" ? "login" : "signup"); setMessage(""); }}>{t(mode === "signup" ? "Iniciar sesión" : "Crear cuenta")}</Button><Button variant="link" onClick={() => { setMode("forgot"); setMessage(""); }}>{t("Recuperar contraseña")}</Button><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>
-  </section></AppShell>;
-}
