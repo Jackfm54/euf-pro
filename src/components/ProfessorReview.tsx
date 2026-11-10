@@ -83,7 +83,7 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
     </div> : null}
       <input ref={fileRef} className="hidden" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple aria-label={t("Archivos para el profesor")} disabled={busy} onChange={async (event) => {
         const selected = Array.from(event.target.files ?? []); event.target.value = "";
-        if (selected.some(file => file.size > 10 * 1024 * 1024) || selected.length + files.length > 8) { setError(t("Máximo 8 fotos o PDF de 10 MB cada uno.")); return; }
+        if (selected.length + files.length > 8) { setError(t("Los archivos superan el tamaño permitido. Envía menos páginas o fotos más ligeras.")); return; }
         if (selected.some(file => !["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type))) { setError(t("El archivo no es una imagen ni un PDF válido.")); return; }
         try {
           const loaded = await Promise.all(selected.map(prepareUpload));
