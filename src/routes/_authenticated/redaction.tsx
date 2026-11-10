@@ -275,10 +275,7 @@ function RedactionContent() {
       e.target.value = "";
       if (!files.length) return;
       for (const file of files) {
-        if (file.size > 10 * 1024 * 1024) {
-          toast.error(t("La foto es demasiado grande (máximo 10 MB)."));
-          continue;
-        }
+        // Compress photos before applying the request limit; PDFs are checked by prepareUpload.
         void prepareUpload(file)
           .then((data) =>
             setImagenes((prev) => {
