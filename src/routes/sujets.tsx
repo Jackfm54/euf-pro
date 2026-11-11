@@ -32,7 +32,7 @@ function SujetsPage() {
   return (
     <AppShell>
       <h1 className="text-3xl font-bold">{t("Sujets de rédaction")}</h1>
-      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("Los tres sujets del cahier oficial del 14 de diciembre de 2022, con sus textos completos. Elige uno y redacta 900 palabras en 4 h 30.")}</p>
+      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("Quince sujets reales de épreuves anteriores (2010-2024), con el cahier del 14 de diciembre de 2022 completo. Elige uno y redacta 900 palabras en 4 h 30.")}</p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         {SUJETS.map((s) => (
