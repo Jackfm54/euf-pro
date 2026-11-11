@@ -56,7 +56,7 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
     try {
       const result = await reviewFn({ data: { images: media, enonce, extraits, langue: language } });
       if (!result.feedback) {
-        setError(result.message ?? t(result.error === "paid_required" ? "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo." : result.error === "review_busy" ? "Ya hay una revisión en curso. Espera a que termine." : result.error === "save_failed" ? "No se pudo guardar la revisión. No se descontó una consulta." : "No se pudo obtener la orientación del profesor."));
+        setError(result.message ?? t(result.error === "paid_required" ? "La revisión requiere un plan de pago" : result.error === "review_busy" ? "Ya hay una revisión en curso. Espera a que termine." : result.error === "save_failed" ? "No se pudo guardar la revisión. No se descontó una consulta." : "No se pudo obtener la orientación del profesor."));
         return;
       }
       setFeedback(result.feedback);
@@ -72,16 +72,16 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
   return <section className="border-b border-border py-5" aria-label={t("Profesor de literatura")}>
     <div className="flex flex-wrap items-center justify-between gap-3">
       <h2 className="flex items-center gap-2 text-lg font-semibold"><GraduationCap className="h-5 w-5 text-accent" />{t("Profesor de literatura")}</h2>
-      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground"><LockKeyhole className="h-3.5 w-3.5" />{access?.paid ? t("Plan de pago") : t("Dos revisiones gratis")}</span>
+      <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground"><LockKeyhole className="h-3.5 w-3.5" />{t("Plan de pago")}</span>
     </div>
     <p className="mt-3 text-sm text-muted-foreground">{t("Cualquier disertación, independiente del tema y los textos del examen.")}</p>
-    {access && !access.paid && <p className="mt-2 text-sm font-medium text-accent">{t("Revisiones gratuitas disponibles: {count}", { count: access.remaining })}</p>}
+    {access?.paid && <p className="mt-2 text-sm font-medium text-accent">{t("Consultas disponibles: {count}", { count: access.remaining })}</p>}
     <div className="mt-4 space-y-4">
     {!access?.allowed ? <div className="mt-3 flex flex-wrap items-center gap-3">
-      <p className="text-sm text-muted-foreground">{t(isError ? "No se pudo comprobar el acceso al profesor." : access ? "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo." : "Procesando…")}</p>
+      <p className="text-sm text-muted-foreground">{t(isError ? "No se pudo comprobar el acceso al profesor." : access ? "La revisión requiere un plan de pago" : "Procesando…")}</p>
       <Button asChild variant="outline" size="sm"><Link to="/planes">{t("Planes")}</Link></Button>
     </div> : null}
-      <input ref={fileRef} className="hidden" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple aria-label={t("Archivos para el profesor")} disabled={busy} onChange={async (event) => {
+      <input ref={fileRef} className="hidden" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple aria-label={t("Archivos para el profesor")} disabled={busy || !access?.allowed} onChange={async (event) => {
         const selected = Array.from(event.target.files ?? []); event.target.value = "";
         if (selected.length + files.length > 8) { setError(t("Los archivos superan el tamaño permitido. Envía menos páginas o fotos más ligeras.")); return; }
         if (selected.some(file => !["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type))) { setError(t("El archivo no es una imagen ni un PDF válido.")); return; }
@@ -93,7 +93,7 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
         } catch (err) { setError(t(err instanceof UploadError && err.code === "pdf_grande" ? "El PDF es demasiado grande (máximo 3 MB). Envía una foto de cada página." : "El archivo no es una imagen ni un PDF válido.")); }
       }} />
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" disabled={busy} onClick={() => fileRef.current?.click()}><Upload />{t("Subir fotos o PDF")}</Button>
+        <Button variant="outline" disabled={busy || !access?.allowed} onClick={() => fileRef.current?.click()}><Upload />{t("Subir fotos o PDF")}</Button>
         <Button disabled={busy || access?.busy || !access?.allowed || Boolean(access?.denial) || !(files.length || images.length)} onClick={() => void submit()}>{busy ? <Loader2 className="animate-spin" /> : <GraduationCap />}{t(busy ? "El profesor está revisando…" : "Pedir orientación")}</Button>
       </div>
       {files.length > 0 && <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{files.map((file, index) => <figure key={index} className="min-w-0 overflow-hidden rounded-md border border-border bg-background">
