@@ -81,6 +81,7 @@ export type Database = {
       professor_entitlements: {
         Row: {
           ai_denial_reason: string | null
+          period_start: string | null
           plan: string
           tier: string | null
           status: string
@@ -89,6 +90,7 @@ export type Database = {
           valid_until: string
         }
         Insert: {
+          period_start?: string | null
           ai_denial_reason?: string | null
           plan: string
           tier?: string | null
@@ -98,6 +100,7 @@ export type Database = {
           valid_until: string
         }
         Update: {
+          period_start?: string | null
           ai_denial_reason?: string | null
           plan?: string
           tier?: string | null
@@ -227,6 +230,8 @@ export type Database = {
         Args: { _id: string; _payload?: Json; _user_id: string }
         Returns: undefined
       }
+      get_evaluation_access: { Args: never; Returns: Json }
+      cancel_student_plan: { Args: never; Returns: undefined }
       get_professor_access: { Args: never; Returns: Json }
       has_role: {
         Args: {
