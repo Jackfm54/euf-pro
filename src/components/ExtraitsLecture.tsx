@@ -14,6 +14,7 @@ interface Props {
 
 export function ExtraitsLecture({ extraits, hauteur = "h-[420px]" }: Props) {
   const { t, direction } = useLanguage();
+  if (extraits.length === 0) return null;
   return (
     <Card className="shadow-soft">
       <CardHeader className="pb-3">
