@@ -27,19 +27,19 @@ export function ExtraitsLecture({ extraits, hauteur = "h-[420px]" }: Props) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs dir={direction} defaultValue={extraits[0].etiquette}>
+        <Tabs key={extraits.map((e) => `${e.auteur}:${e.titre}`).join("|")} dir={direction} defaultValue={extraits[0].etiquette}>
           <TabsList
             className="grid w-full"
             style={{ gridTemplateColumns: `repeat(${extraits.length}, minmax(0, 1fr))` }}
           >
             {extraits.map((e) => (
-              <TabsTrigger key={t(e.etiquette)} value={t(e.etiquette)}>
+              <TabsTrigger key={e.etiquette} value={e.etiquette}>
                 {t(e.etiquette)}
               </TabsTrigger>
             ))}
           </TabsList>
           {extraits.map((e) => (
-            <TabsContent lang="fr" dir="ltr" key={t(e.etiquette)} value={t(e.etiquette)} className="mt-4">
+            <TabsContent lang="fr" dir="ltr" key={e.etiquette} value={e.etiquette} className="mt-4">
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-semibold">{e.auteur}</p>
@@ -48,7 +48,7 @@ export function ExtraitsLecture({ extraits, hauteur = "h-[420px]" }: Props) {
                   </p>
                   <p className="mt-0.5 text-xs text-muted-foreground">{e.noticeAuteur}</p>
                 </div>
-                <Badge variant="secondary" className="shrink-0 text-[11px]">{t("Épreuve officielle")}</Badge>
+                <Badge variant="secondary" className="shrink-0 text-[11px]">{t(e.source)}</Badge>
               </div>
 
               <div className="mt-3 rounded-md border border-dashed bg-secondary/40 p-3">
@@ -78,6 +78,7 @@ export function ExtraitsLecture({ extraits, hauteur = "h-[420px]" }: Props) {
                   <p className="border-t pt-3 text-xs italic text-muted-foreground">
                     {e.reference}
                   </p>
+                  {e.sourceUrl ? <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer" className="block text-xs text-accent underline underline-offset-4">{t("Consultar la fuente")}</a> : null}
                 </div>
               </ScrollArea>
             </TabsContent>
