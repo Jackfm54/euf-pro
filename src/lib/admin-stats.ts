@@ -1,16 +1,15 @@
-import { PLAN_TIERS, type PlanTier } from "./plans";
+import { PLAN_TIERS, activeEntitlement } from "./plans";
 
 export type Entitlement = { user_id: string; plan: string; status: string; valid_until: string; tier: string | null };
 
 /** Plan visible para el administrador: gratis salvo acceso pagado activo y vigente. */
 export function planFor(ent: Entitlement | undefined, now = Date.now()) {
-  if (!ent || ent.status !== "active" || Date.parse(ent.valid_until) <= now) {
-    return { tier: "gratis" as const, period: null, price: 0, monthlyValue: 0, validUntil: ent?.valid_until ?? null };
+  if (!ent || !activeEntitlement(ent.status, ent.valid_until, now)) {
+    return { tier: "gratis", period: null, price: 0 as number | null, monthlyValue: 0, validUntil: ent?.valid_until ?? null };
   }
-  const tier: PlanTier = PLAN_TIERS.find((p) => p.id === ent.tier) ?? PLAN_TIERS[0];
-  const annual = ent.plan === "annual";
-  const price = annual ? tier.annualPrice : tier.monthlyPrice;
-  return { tier: tier.id, period: annual ? ("annual" as const) : ("monthly" as const), price, monthlyValue: annual ? Math.round((price / 12) * 100) / 100 : price, validUntil: ent.valid_until };
+  const tier = PLAN_TIERS.find(p => p.id === ent.tier);
+  if (!tier || tier.id === "gratuit") return { tier: "legacy", period: ent.plan, price: null, monthlyValue: 0, validUntil: ent.valid_until };
+  return { tier: tier.id, period: tier.period, price: tier.price, monthlyValue: tier.id === "etudiant" && ent.status === "active" ? 15 : 0, validUntil: ent.valid_until };
 }
 
 /** Serie diaria de los últimos `days` días (UTC) para la gráfica de uso. */
