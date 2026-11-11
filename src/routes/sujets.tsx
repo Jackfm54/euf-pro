@@ -11,13 +11,13 @@ export const Route = createFileRoute("/sujets")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { title: "Sujets de dissertation critique | Entraînement ÉUF | EUF pro" },
+      { title: "Sujets de dissertation critique | Entraînement ÉUF" },
       {
         name: "description",
         content:
-          "Sujets de rédaction inspirados en épreuves anteriores: comparación, discusión y análisis, con corpus literario y pistas de reflexión.",
+          "Quinze sujets de dissertation critique avec textes : quatre sujets officiels et onze exercices de comparaison sur des œuvres du domaine public.",
       },
-      { property: "og:title", content: "Sujets de dissertation critique — ÉUF | EUF pro" },
+      { property: "og:title", content: "Sujets de dissertation critique — ÉUF" },
       {
         property: "og:description",
         content: "Elige un sujet, revisa el corpus y empieza tu dissertation cronometrada.",
@@ -28,11 +28,11 @@ export const Route = createFileRoute("/sujets")({
 });
 
 function SujetsPage() {
-  const { t, direction } = useLanguage();
+  const { t, locale, direction } = useLanguage();
   return (
     <AppShell>
       <h1 className="text-3xl font-bold">{t("Sujets de rédaction")}</h1>
-      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("Quince sujets reales de épreuves anteriores (2010-2024), con el cahier del 14 de diciembre de 2022 completo. Elige uno y redacta 900 palabras en 4 h 30.")}</p>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("15 temas con textos completos: 4 oficiales y 11 de práctica con dos textos de dominio público.")}</p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         {SUJETS.map((s) => (
@@ -40,23 +40,23 @@ function SujetsPage() {
             <CardHeader>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                 <CardDescription className="min-w-0">
-                  {t(s.rang)} · {t(s.epoque)}
+                  {s.rang} · {s.epoque}
                 </CardDescription>
                 <Badge variant="secondary" className="shrink-0">
-                  {t(s.type)}
+                  {s.type}
                 </Badge>
               </div>
               <CardTitle lang="fr" dir="ltr" className="text-base leading-snug">{s.enonce}</CardTitle>
             </CardHeader>
             <CardContent className="mt-auto space-y-4">
-              <p lang="fr" dir="ltr" className="text-xs italic text-muted-foreground">{s.corpus}</p>
-              <p className="text-xs text-muted-foreground">{t(s.cahier)}</p>
+              <p className="text-xs italic text-muted-foreground">{s.corpus}</p>
+              <p className="text-xs text-muted-foreground">{s.extraits[0]?.source === "Sujet de pratique" ? t("Sujet de pratique — textes du domaine public ; énoncé original, non officiel.") : s.cahier}</p>
 
               <ul className="space-y-1 text-sm text-muted-foreground">
                 {s.pistes.map((p) => (
-                  <li dir={direction} key={p} className="flex gap-2">
+                  <li lang="fr" dir="ltr" key={p} className="flex gap-2">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                    <span>{t(p)}</span>
+                    {p}
                   </li>
                 ))}
               </ul>
