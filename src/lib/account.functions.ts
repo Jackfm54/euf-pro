@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { freeEvaluationsRemaining } from "./plans";
+import { FREE_EVALUATIONS } from "./plans";
 import { z } from "zod";
 
 export const acknowledgeEvaluation = createServerFn({ method: "POST" })
@@ -15,14 +15,14 @@ export const acknowledgeEvaluation = createServerFn({ method: "POST" })
 export const getAccount = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const [profile, roles, usage, allowance] = await Promise.all([
+    const [profile, roles, access] = await Promise.all([
       context.supabase.from("profiles").select("display_name").eq("id", context.userId).single(),
       context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" }),
-      context.supabase.from("evaluation_usage").select("id", { count: "exact", head: true }).eq("user_id", context.userId).eq("status", "completed"),
-      context.supabase.from("evaluation_allowances").select("total_limit").eq("user_id", context.userId).maybeSingle(),
+      context.supabase.rpc("get_evaluation_access"),
     ]);
-    if (profile.error || roles.error || usage.error || allowance.error) throw new Error("Account unavailable");
-    return { displayName: profile.data.display_name, isAdmin: roles.data === true, remaining: freeEvaluationsRemaining(usage.count ?? 0, allowance.data?.total_limit) };
+    if (profile.error || roles.error || access.error) throw new Error("Account unavailable");
+    const value = z.object({ remaining: z.number(), paid: z.boolean(), cancellable: z.boolean(), validUntil: z.string().nullable() }).passthrough().parse(access.data);
+    return { displayName: profile.data.display_name, isAdmin: roles.data === true, ...value };
   });
 
 export const getAdministration = createServerFn({ method: "GET" })
@@ -40,7 +40,7 @@ export const getAdministration = createServerFn({ method: "GET" })
       supabaseAdmin.from("app_errors").select("id,source,status,message,created_at,user_id").gte("created_at", since).order("created_at", { ascending: false }).limit(50),
       supabaseAdmin.auth.admin.listUsers({ perPage: 1000 }),
       supabaseAdmin.from("professor_review_usage").select("user_id,status,source,created_at").limit(10000),
-      supabaseAdmin.from("professor_entitlements").select("user_id,plan,status,valid_until,tier"),
+      supabaseAdmin.from("professor_entitlements").select("user_id,plan,status,valid_until,tier,period_start,updated_at"),
     ]);
     if (profiles.error || usage.error || allowances.error) throw new Error("Administration unavailable");
     const emails = new Map((authUsers.data?.users ?? []).map((u) => [u.id, u.email ?? ""]));
@@ -56,11 +56,16 @@ export const getAdministration = createServerFn({ method: "GET" })
     const revFailed = rev.filter((r) => r.status === "failed");
     const users = (profiles.data ?? []).map((p) => {
       const used = done.filter((u) => u.user_id === p.id).length;
-      const limit = limits.get(p.id) ?? 2;
-      const plan = planFor(entMap.get(p.id), now);
+      const limit = Math.min(FREE_EVALUATIONS, limits.get(p.id) ?? FREE_EVALUATIONS);
+      const entitlement = entMap.get(p.id);
+      const plan = planFor(entitlement, now);
+      const periodStart = Date.parse(entitlement?.period_start ?? entitlement?.updated_at ?? "");
+      const periodUsed = all.filter(u => u.user_id === p.id && ["completed", "pending"].includes(u.status) && Date.parse(u.created_at) >= periodStart).length
+        + rev.filter(u => u.user_id === p.id && ["completed", "pending"].includes(u.status) && Date.parse(u.created_at) >= periodStart).length;
+      const paidQuota = plan.tier === "etudiant" ? 30 : plan.tier === "sprint" ? 60 : plan.tier === "institution" ? limits.get(p.id) ?? 0 : entitlement?.tier === "basico" ? 8 : entitlement?.tier === "avanzado" ? 25 : entitlement?.tier === "premium" ? 70 : 0;
       return {
         id: p.id, name: p.display_name, email: emails.get(p.id) ?? "", createdAt: p.created_at, lastSeen: lastSeen.get(p.id) ?? null,
-        used, remaining: Math.max(0, limit - used), failed: failed.filter((u) => u.user_id === p.id).length,
+        used, remaining: Math.max(0, plan.tier === "gratis" ? limit - used : paidQuota - periodUsed), failed: failed.filter((u) => u.user_id === p.id).length,
         reviews: revDone.filter((r) => r.user_id === p.id).length,
         plan,
       };
@@ -94,4 +99,12 @@ export const getAdministration = createServerFn({ method: "GET" })
       users,
       errors: (errors.data ?? []).map((e) => ({ ...e, email: e.user_id ? emails.get(e.user_id) ?? "" : "" })),
     };
+  });
+
+export const cancelStudentPlan = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { error } = await context.supabase.rpc("cancel_student_plan");
+    if (error) throw new Error("Cancellation unavailable");
+    return { ok: true };
   });
