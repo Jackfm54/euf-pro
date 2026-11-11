@@ -1,3 +1,5 @@
+import { SUJETS_PRATIQUE } from "./euf-practice";
+
 export type CritereId = "argumentation" | "structure" | "langue";
 
 /** Cotes officielles attribuées aux sous-critères de l'épreuve. */
@@ -143,7 +145,9 @@ export interface Extrait {
   reference: string;
   /** Notes de bas de page du cahier. */
   notes?: string[];
-  source: "Épreuve officielle";
+  source: "Épreuve officielle" | "Sujet de pratique";
+  /** Verified digital edition for complete public-domain practice texts. */
+  sourceUrl?: string;
 }
 
 export interface Sujet {
@@ -164,7 +168,7 @@ export interface Sujet {
 export const CONSIGNE_SUJET =
   "Vous soutiendrez votre point de vue à l'aide d'arguments cohérents et convaincants et à l'aide de preuves relatives au contenu et à la forme des textes proposés, preuves puisées dans ces textes et dans vos connaissances littéraires qui conviennent au sujet de rédaction.";
 
-/** Sujets de rédaction du cahier officiel de l'épreuve uniforme de français. */
+/** Four official subjects and eleven original practice subjects, all with readings. */
 export const SUJETS: Sujet[] = [
   {
     id: "entree-ecole",
@@ -345,55 +349,6 @@ export const SUJETS: Sujet[] = [
     ],
   },
   {
-    id: "ru-refugies",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Peut-on dire que l'extrait du roman Ru de Kim Thúy trace un portrait sombre de la vie des réfugiés ?",
-    corpus: "Kim Thúy, Ru (2009).",
-    epoque: "XXIe siècle — écritures migrantes",
-    cahier: "Épreuve uniforme de français — 14 décembre 2016",
-    pistes: [
-      "Relever les images liées à la mer, à la fuite et au camp de réfugiés.",
-      "Observer le regard de la narratrice enfant sur l'exil et la perte des repères.",
-      "Nuancer : le portrait est sombre, mais laisse-t-il une place à l'espoir et à la résilience ?",
-    ],
-    extraits: [],
-  },
-  {
-    id: "situation-orphelin",
-    rang: "Sujet d'examen",
-    type: "Sujet de comparaison",
-    enonce:
-      "Dans ces extraits des romans Le souffle de l'harmatan de Sylvain Trudel et La vie devant soi de Romain Gary, est-il vrai d'affirmer que la situation d'orphelin est vécue de la même façon ?",
-    corpus:
-      "Sylvain Trudel, Le souffle de l'harmatan (1986) · Romain Gary, La vie devant soi (1975).",
-    epoque: "XXe siècle — roman de l'enfance",
-    cahier: "Épreuve uniforme de français — 14 décembre 2016",
-    pistes: [
-      "Comparer la voix narrative des deux enfants et leur façon de nommer l'abandon.",
-      "Observer les figures de remplacement : qui entoure chaque orphelin ?",
-      "Nuancer : même réalité d'orphelin, mais registres et tonalités différents.",
-    ],
-    extraits: [],
-  },
-  {
-    id: "fees-ont-soif",
-    rang: "Sujet d'examen",
-    type: "Sujet de comparaison",
-    enonce:
-      "Est-il vrai d'affirmer que, dans la pièce de théâtre Les fées ont soif de Denise Boucher, les personnages de Marie et de Madeleine vivent une quête de liberté semblable ?",
-    corpus: "Denise Boucher, Les fées ont soif (1978).",
-    epoque: "XXe siècle — théâtre québécois et féminisme",
-    cahier: "Épreuve uniforme de français — 18 décembre 2018",
-    pistes: [
-      "Comparer les deux parcours : la mère au foyer et la prostituée.",
-      "Relever les monologues et les ruptures de ton qui expriment la révolte.",
-      "Nuancer : quête commune de liberté, mais moyens et issues différents.",
-    ],
-    extraits: [],
-  },
-  {
     id: "rentree-scolaire",
     rang: "Sujet d'examen",
     type: "Sujet d'analyse",
@@ -448,137 +403,7 @@ export const SUJETS: Sujet[] = [
       },
     ],
   },
-  {
-    id: "liberation-meres",
-    rang: "Sujet d'examen",
-    type: "Sujet de comparaison",
-    enonce:
-      "Dans l'extrait de la pièce de théâtre Encore cinq minutes de Françoise Loranger et dans l'extrait de la pièce Les fées ont soif de Denise Boucher, peut-on dire que la libération des mères est présentée de la même façon ?",
-    corpus:
-      "Françoise Loranger, Encore cinq minutes (1967) · Denise Boucher, Les fées ont soif (1978).",
-    epoque: "XXe siècle — théâtre québécois",
-    cahier: "Épreuve uniforme de français — 18 décembre 2019",
-    pistes: [
-      "Comparer la condition des mères dans les deux pièces et ce qui les enchaîne.",
-      "Observer le ton : humour et ironie chez Loranger, révolte lyrique chez Boucher.",
-      "Nuancer : libération souhaitée dans les deux cas, mais contextes et portée différents.",
-    ],
-    extraits: [],
-  },
-  {
-    id: "defaitisme",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Dans l'extrait du roman Poussière sur la ville d'André Langevin, peut-on affirmer que le défaitisme domine ?",
-    corpus: "André Langevin, Poussière sur la ville (1953).",
-    epoque: "XXe siècle — roman québécois classique",
-    cahier: "Épreuve uniforme de français — 18 décembre 2019",
-    pistes: [
-      "Relever le vocabulaire de l'échec, de la fatigue et de l'enfermement.",
-      "Observer le cadre : la petite ville poussiéreuse comme reflet de l'état d'âme.",
-      "Nuancer : le défaitisme domine-t-il sans partage ou subsiste-t-il une lueur de révolte ?",
-    ],
-    extraits: [],
-  },
-  {
-    id: "pays-accueil",
-    rang: "Sujet d'examen",
-    type: "Sujet de comparaison",
-    enonce:
-      "Est-il juste d'affirmer que la découverte du pays d'accueil est vécue de la même façon dans l'extrait de la nouvelle « Jaune et blanc » de Monique Proulx et dans l'extrait du roman Le pavillon des miroirs de Sergio Kokis ?",
-    corpus:
-      "Monique Proulx, « Jaune et blanc » · Sergio Kokis, Le pavillon des miroirs (1994).",
-    epoque: "XXe-XXIe siècle — écritures migrantes",
-    cahier: "Épreuve uniforme de français — 18 mai 2022",
-    pistes: [
-      "Comparer les premières impressions du Québec : émerveillement, choc, dépaysement.",
-      "Observer le rôle des sens (couleurs, froid, lumière) dans la découverte.",
-      "Nuancer : même thème de l'arrivée, mais regards et tonalités contrastés.",
-    ],
-    extraits: [],
-  },
-  {
-    id: "portrait-moliere",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Peut-on dire que l'extrait de la pièce de théâtre « Le roi attend » de George Sand propose un portrait élogieux de Molière ?",
-    corpus: "George Sand, « Le roi attend ».",
-    epoque: "XIXe siècle — théâtre français",
-    cahier: "Épreuve uniforme de français — 18 mai 2022",
-    pistes: [
-      "Relever les éloges explicites : le génie, le courage, l'art de Molière.",
-      "Observer la situation dramatique : Molière attendu par le roi, au sommet de sa gloire.",
-      "Nuancer : portrait élogieux, mais la pièce montre-t-elle aussi ses fragilités ?",
-    ],
-    extraits: [],
-  },
-  {
-    id: "regard-aviation",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Peut-on affirmer que, dans l'extrait du récit autobiographique Terre des hommes d'Antoine de Saint-Exupéry, le narrateur porte un regard favorable sur le monde de l'aviation ?",
-    corpus: "Antoine de Saint-Exupéry, Terre des hommes (1939).",
-    epoque: "XXe siècle — récit autobiographique",
-    cahier: "Épreuve uniforme de français — 9 août 2023",
-    pistes: [
-      "Relever les images de grandeur : le ciel, la machine, la camaraderie des pilotes.",
-      "Observer la dimension philosophique : l'avion comme outil de découverte de l'humain.",
-      "Nuancer : regard favorable, mais teinté de conscience du danger et de la fragilité.",
-    ],
-    extraits: [],
-  },
-  {
-    id: "argent-saccard",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Est-il juste d'affirmer que, dans l'extrait du roman L'argent d'Émile Zola, l'argent est la principale préoccupation d'Aristide Saccard ?",
-    corpus: "Émile Zola, L'argent (1891).",
-    epoque: "XIXe siècle — naturalisme français",
-    cahier: "Épreuve uniforme de français — 18 décembre 2024",
-    pistes: [
-      "Relever le vocabulaire de la spéculation, de la Bourse et de la fortune.",
-      "Observer les gestes et le regard de Saccard : l'argent comme passion dévorante.",
-      "Nuancer : l'argent est-il une fin en soi ou un moyen de puissance et de rêve ?",
-    ],
-    extraits: [],
-  },
-  {
-    id: "oceano-nox",
-    rang: "Sujet d'examen",
-    type: "Sujet d'analyse",
-    enonce:
-      "Peut-on dire que le poète associe la disparition à la tristesse dans le poème « Oceano nox » de Victor Hugo ?",
-    corpus: "Victor Hugo, « Oceano nox », Les Rayons et les Ombres (1840).",
-    epoque: "XIXe siècle — poésie romantique",
-    cahier: "Épreuve uniforme de français — 18 décembre 2024",
-    pistes: [
-      "Relever les images de la mer, de la nuit et de l'attente des disparus.",
-      "Observer le rythme et les sonorités qui créent la plainte poétique.",
-      "Nuancer : tristesse dominante, mais aussi hommage et mémoire des marins.",
-    ],
-    extraits: [],
-  },
-  {
-    id: "oiseaux-poesie",
-    rang: "Sujet d'examen",
-    type: "Sujet de comparaison",
-    enonce:
-      "Est-il juste d'affirmer que les oiseaux sont présentés de la même façon dans le poème « Les Corbeaux » d'Émile Nelligan et le poème « Cage d'oiseau » de Hector de Saint-Denys-Garneau ?",
-    corpus:
-      "Émile Nelligan, « Les Corbeaux » · Hector de Saint-Denys-Garneau, « Cage d'oiseau ».",
-    epoque: "XIXe-XXe siècle — poésie québécoise",
-    cahier: "Épreuve uniforme de français — 15 mai 2013",
-    pistes: [
-      "Comparer la symbolique de l'oiseau : menace et fatalité chez Nelligan, enfermement chez Saint-Denys-Garneau.",
-      "Observer les images, les couleurs et la musicalité des deux poèmes.",
-      "Nuancer : motif commun, mais atmosphères et sensibilités distinctes.",
-    ],
-    extraits: [],
-  },
+  ...SUJETS_PRATIQUE,
 ];
 
 /** Prochaines dates officielles de l'épreuve uniforme de français. */
