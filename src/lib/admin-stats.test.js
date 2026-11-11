@@ -9,14 +9,12 @@ describe("plan de cada usuario en el panel", () => {
     expect(planFor(undefined, now)).toMatchObject({ tier: "gratis", price: 0 });
   });
   test("acceso vencido vuelve a Gratis", () => {
-    expect(planFor({ user_id: "u", plan: "monthly", status: "active", valid_until: "2026-11-01T00:00:00Z", tier: "premium" }, now).tier).toBe("gratis");
+    expect(planFor({ user_id: "u", plan: "monthly", status: "active", valid_until: "2026-11-01T00:00:00Z", tier: "sprint" }, now).tier).toBe("gratis");
   });
-  test("Avanzado mensual vale 50", () => {
-    expect(planFor({ user_id: "u", plan: "monthly", status: "active", valid_until: future, tier: "avanzado" }, now)).toMatchObject({ tier: "avanzado", price: 50, monthlyValue: 50 });
-  });
-  test("Premium anual vale 1000 (83.33 al mes)", () => {
-    expect(planFor({ user_id: "u", plan: "annual", status: "active", valid_until: future, tier: "premium" }, now)).toMatchObject({ price: 1000, monthlyValue: 83.33 });
-  });
+  test("Étudiant monthly is 15 CAD", () => { expect(planFor({ user_id: "u", plan: "monthly", status: "active", valid_until: future, tier: "etudiant" }, now)).toMatchObject({ price: 15, monthlyValue: 15 }); });
+  test("Sprint one-time is 24.99, not monthly revenue", () => { expect(planFor({ user_id: "u", plan: "one_time", status: "active", valid_until: future, tier: "sprint" }, now)).toMatchObject({ price: 24.99, monthlyValue: 0 }); });
+  test("institution price is on request", () => { expect(planFor({ user_id: "u", plan: "custom", status: "active", valid_until: future, tier: "institution" }, now).price).toBe(null); });
+
 });
 
 test("la gráfica cuenta evaluaciones, fallas, revisiones y registros por día", () => {
