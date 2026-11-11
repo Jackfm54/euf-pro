@@ -99,6 +99,7 @@ export const corrigerRedaction = createServerFn({ method: "POST" })
       const e = streamError ?? caught;
       const status = (e as { statusCode?: number }).statusCode;
       console.error("Correction IA échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
+      await supabaseAdmin.from("app_errors").insert({ user_id: context.userId, source: "correction-texte", status: status ?? null, message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) }).then(() => undefined, () => undefined);
       if (status === 403) setResponseStatus(403);
       return { correction: null, erreur: evaluationErrorCode(e), message: evaluationErrorMessage(e) };
     } finally {
@@ -184,6 +185,7 @@ Rédige "type", "explication" et "recommandations" en ${langue}. "extrait" et "t
       const e = streamError ?? caught;
       const status = (e as { statusCode?: number }).statusCode;
       console.error("Correction IA (image) échouée", { status, model: process.env.AI_MODEL ?? "gpt-4o-mini", message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) });
+      await supabaseAdmin.from("app_errors").insert({ user_id: context.userId, source: "correction-image", status: status ?? null, message: e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300) }).then(() => undefined, () => undefined);
       if (status === 403) setResponseStatus(403);
       return { correction: null, erreur: evaluationErrorCode(e), message: evaluationErrorMessage(e) };
     } finally {

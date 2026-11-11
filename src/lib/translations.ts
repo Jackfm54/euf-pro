@@ -9,6 +9,19 @@ export function isLanguage(value: unknown): value is Language {
   return value === "es" || value === "fr" || value === "ar";
 }
 export const translations: Record<string, Record<Language, string>> = {
+  "Usuarios": { es: "Usuarios", fr: "Utilisateurs", ar: "المستخدمون" },
+  "Evaluaciones hoy": { es: "Evaluaciones hoy", fr: "Évaluations aujourd'hui", ar: "تقييمات اليوم" },
+  "Evaluaciones 7 días": { es: "Evaluaciones 7 días", fr: "Évaluations 7 jours", ar: "تقييمات 7 أيام" },
+  "Evaluaciones totales": { es: "Evaluaciones totales", fr: "Évaluations totales", ar: "إجمالي التقييمات" },
+  "Fallas 7 días": { es: "Fallas 7 días", fr: "Échecs 7 jours", ar: "أعطال 7 أيام" },
+  "Correo": { es: "Correo", fr: "Courriel", ar: "البريد" },
+  "Usadas": { es: "Usadas", fr: "Utilisées", ar: "المستخدمة" },
+  "Restantes": { es: "Restantes", fr: "Restantes", ar: "المتبقية" },
+  "Fallidas": { es: "Fallidas", fr: "Échouées", ar: "الفاشلة" },
+  "Fallas recientes (30 días)": { es: "Fallas recientes (30 días)", fr: "Échecs récents (30 jours)", ar: "أعطال حديثة (30 يومًا)" },
+  "Sin fallas registradas.": { es: "Sin fallas registradas.", fr: "Aucun échec enregistré.", ar: "لا توجد أعطال مسجلة." },
+  "Tipo": { es: "Tipo", fr: "Type", ar: "النوع" },
+  "Detalle": { es: "Detalle", fr: "Détail", ar: "التفاصيل" },
   "Dos revisiones gratis": { es: "Una revisión gratis", fr: "Une révision gratuite", ar: "مراجعة مجانية واحدة" },
   "Revisiones gratuitas disponibles: {count}": { es: "Revisiones gratuitas disponibles: {count}", fr: "Révisions gratuites disponibles : {count}", ar: "المراجعات المجانية المتبقية: {count}" },
   "Has utilizado tus dos revisiones gratis. Necesitas un forfait activo.": { es: "Has utilizado tu revisión gratis. Necesitas un forfait activo.", fr: "Vous avez utilisé votre révision gratuite. Un forfait actif est requis.", ar: "لقد استخدمت مراجعتك المجانية. تحتاج إلى خطة نشطة." },

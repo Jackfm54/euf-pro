@@ -14,6 +14,12 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_errors: {
+        Row: { created_at: string; id: string; message: string | null; source: string; status: number | null; user_id: string | null }
+        Insert: { created_at?: string; id?: string; message?: string | null; source: string; status?: number | null; user_id?: string | null }
+        Update: { created_at?: string; id?: string; message?: string | null; source?: string; status?: number | null; user_id?: string | null }
+        Relationships: []
+      }
       evaluation_allowances: {
         Row: {
           total_limit: number
