@@ -22,8 +22,8 @@ function AdminPage() {
   const { data } = useSuspenseQuery(options);
   const { t, locale } = useLanguage();
   const d = (v: string) => new Date(v).toLocaleString(locale, { dateStyle: "short", timeStyle: "short" });
-  const money = (v: number) => new Intl.NumberFormat(locale, { style: "currency", currency: "USD" }).format(v);
-  const tierLabel: Record<string, string> = { gratis: "Gratis", basico: "Básico", avanzado: "Avanzado", premium: "Premium" };
+  const money = (v: number) => new Intl.NumberFormat(locale, { style: "currency", currency: "CAD" }).format(v);
+  const tierLabel: Record<string, string> = { gratis: "Gratis", etudiant: "Étudiant", sprint: "Sprint ÉUF", institution: "Cégep / Institution", legacy: "Plan anterior" };
   const series = data.series.map((s) => ({ ...s, dia: new Date(s.date + "T12:00:00Z").toLocaleDateString(locale, { day: "numeric", month: "short" }) }));
   return <AppShell>
     <h1 className="text-3xl font-bold">{t("Administración")}</h1>
@@ -77,8 +77,8 @@ function AdminPage() {
       <th className="py-3 text-start">{t("Nombre")}</th><th className="text-start">{t("Correo")}</th><th className="text-start">{t("Plan")}</th><th className="text-end">{t("Valor")}</th><th className="text-start">{t("Fecha")}</th><th className="text-start">{t("Último acceso")}</th><th className="text-end">{t("Usadas")}</th><th className="text-end">{t("Restantes")}</th><th className="text-end">{t("Fallidas")}</th><th className="text-end">{t("Revisiones")}</th>
     </tr></thead><tbody>{data.users.map((u) => <tr key={u.id} className="border-b">
       <td className="py-3">{u.name || "—"}</td><td dir="ltr" className="text-start">{u.email || "—"}</td>
-      <td className="whitespace-nowrap">{t(tierLabel[u.plan.tier])}{u.plan.period ? ` · ${t(u.plan.period === "annual" ? "Anual" : "Mensual")}` : ""}</td>
-      <td className="text-end whitespace-nowrap">{money(u.plan.price)}</td>
+      <td className="whitespace-nowrap">{t(tierLabel[u.plan.tier])}{u.plan.period ? ` · ${t(u.plan.period === "monthly" ? "Mensual" : u.plan.period === "one_time" ? "Pago único · 60 días" : "A convenir")}` : ""}</td>
+      <td className="text-end whitespace-nowrap">{u.plan.price === null ? t("A convenir") : money(u.plan.price)}</td>
       <td>{new Date(u.createdAt).toLocaleDateString(locale)}</td><td>{u.lastSeen ? d(u.lastSeen) : "—"}</td>
       <td className="text-end">{u.used}</td><td className="text-end">{u.remaining}</td><td className="text-end">{u.failed}</td><td className="text-end">{u.reviews}</td>
     </tr>)}</tbody></table></div>
