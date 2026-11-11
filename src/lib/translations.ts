@@ -9,6 +9,10 @@ export function isLanguage(value: unknown): value is Language {
   return value === "es" || value === "fr" || value === "ar";
 }
 export const translations: Record<string, Record<Language, string>> = {
+  "15 temas con textos completos: 4 oficiales y 11 de práctica con dos textos de dominio público.": { es: "15 temas con textos completos: 4 oficiales y 11 de práctica con dos textos de dominio público.", fr: "15 sujets avec textes complets : 4 officiels et 11 exercices de comparaison avec deux textes du domaine public.", ar: "١٥ موضوعًا بنصوص كاملة: ٤ رسمية و١١ تدريبًا للمقارنة، لكل منها نصان من الملكية العامة." },
+  "Sujet de pratique": { es: "Tema de práctica", fr: "Sujet de pratique", ar: "موضوع تدريبي" },
+  "Sujet de pratique — textes du domaine public ; énoncé original, non officiel.": { es: "Tema de práctica — textos de dominio público; pregunta original, no oficial.", fr: "Sujet de pratique — textes du domaine public ; énoncé original, non officiel.", ar: "موضوع تدريبي — نصوص من الملكية العامة؛ سؤال أصلي غير رسمي." },
+  "Consultar la fuente": { es: "Consultar la fuente", fr: "Consulter la source", ar: "الاطلاع على المصدر" },
   "Étudiant": {"es": "Étudiant", "fr": "Étudiant", "ar": "طالب"},
   "Sprint ÉUF": {"es": "Sprint ÉUF", "fr": "Sprint ÉUF", "ar": "Sprint ÉUF"},
   "Cégep / Institution": {"es": "Cégep / Institution", "fr": "Cégep / Institution", "ar": "كلية / مؤسسة"},
