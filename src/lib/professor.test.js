@@ -6,17 +6,16 @@ test("professor guidance requires a server-confirmed paid entitlement", () => {
   expect(parseProfessorAccess({ allowed: false, denial: null }).allowed).toBe(false);
   expect(parseProfessorAccess({ isAdmin: true, remaining: 2 }).allowed).toBe(false);
   expect(parseProfessorAccess({ allowed: "true" }).allowed).toBe(false);
-  expect(parseProfessorAccess({ allowed: true, denial: null }).allowed).toBe(true);
+  expect(parseProfessorAccess({ allowed: true, paid: true, denial: null }).allowed).toBe(true);
 });
 test("provider access denial remains separate from paid permission", () => {
-  expect(parseProfessorAccess({ allowed: true, denial: "Access blocked" }).denial).toBe("Access blocked");
+  expect(parseProfessorAccess({ allowed: true, paid: true, denial: "Access blocked" }).denial).toBe("Access blocked");
 });
 
-test("Revisión has exactly one free consultations independent of exam usage", () => {
-  expect(FREE_PROFESSOR_REVIEWS).toBe(1);
-  expect(parseProfessorAccess({ allowed: true, remaining: 1 }).remaining).toBe(1);
-  expect(parseProfessorAccess({ allowed: false, remaining: 0 }).allowed).toBe(false);
-  expect(parseProfessorAccess({ remaining: 999 }).remaining).toBe(1);
+test("review is never free, even when a stale access response says allowed", () => {
+  expect(FREE_PROFESSOR_REVIEWS).toBe(0);
+  expect(parseProfessorAccess({ allowed: true, remaining: 1, paid: false })).toMatchObject({ allowed: false, remaining: 0 });
+  expect(parseProfessorAccess({ allowed: true, remaining: 30, paid: true })).toMatchObject({ allowed: true, remaining: 30 });
 });
 test("failed AI reviews do not consume a consultation", async () => {
   let released = false; let saved = false;
