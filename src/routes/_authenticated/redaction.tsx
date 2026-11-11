@@ -3,7 +3,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { acknowledgeEvaluation, getAccount } from "@/lib/account.functions";
 import { deliverEvaluation } from "@/lib/evaluation-delivery";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Camera, FileText, Loader2, Pause, Play, RotateCcw, Save, Sparkles } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
@@ -84,6 +84,7 @@ function RedactionPage() {
 function RedactionContent() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const accountFn = useServerFn(getAccount);
   const { data: account } = useQuery({ queryKey: ["account",user?.id], queryFn: () => accountFn(), enabled: Boolean(user) });
   const { t, language, locale, direction } = useLanguage();
@@ -249,8 +250,9 @@ function RedactionContent() {
         .join("\n\n");
       const r = await corrigerFn({ data: { texte, enonce: sujet.enonce, extraits, langue: language } });
       if (!r.correction) {
+        if (r.erreur === "plan_required") { await navigate({ to: "/planes" }); return; }
         const msg: Record<string, string> = {
-          plan_required: "Has utilizado tus dos evaluaciones gratis. Los planes de pago todavía no están disponibles.",
+          plan_required: "Has agotado tus consultas. Elige un plan para continuar.",
           evaluation_busy: "Ya hay una evaluación en curso. Espera a que termine.",
           court: "El texto es demasiado corto para corregirlo (mínimo 50 palabras).",
           limite: "Demasiadas correcciones seguidas. Espera un minuto e inténtalo de nuevo.",
@@ -267,7 +269,7 @@ function RedactionContent() {
       void queryClient.invalidateQueries({ queryKey: ["account"] });
       setEnCorrection(false);
     }
-  }, [corrigerFn, language, sujet, t, texte, acceptEvaluation, queryClient]);
+  }, [navigate, corrigerFn, language, sujet, t, texte, acceptEvaluation, queryClient]);
 
   const elegirImagen = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -315,8 +317,9 @@ function RedactionContent() {
         data: { images: imagenes, enonce: sujet.enonce, extraits, langue: language },
       });
       if (!r.correction) {
+        if (r.erreur === "plan_required") { await navigate({ to: "/planes" }); return; }
         const msg: Record<string, string> = {
-          plan_required: "Has utilizado tus dos evaluaciones gratis. Los planes de pago todavía no están disponibles.",
+          plan_required: "Has agotado tus consultas. Elige un plan para continuar.",
           evaluation_busy: "Ya hay una evaluación en curso. Espera a que termine.",
           image: "El archivo no es una imagen ni un PDF válido.",
           grande: "La foto es demasiado grande (máximo 10 MB).",
@@ -342,7 +345,7 @@ function RedactionContent() {
       void queryClient.invalidateQueries({ queryKey: ["account"] });
       setEnCorrection(false);
     }
-  }, [corrigerImageFn, imagenes, language, sujet, t, acceptEvaluation, queryClient]);
+  }, [navigate, corrigerImageFn, imagenes, language, sujet, t, acceptEvaluation, queryClient]);
 
 
   const uploadPanel = (
@@ -378,9 +381,9 @@ function RedactionContent() {
                   {t(imagenes.length ? "Añadir otro archivo" : "Subir fotos o PDF")}
                 </Button>
                 {imagenes.length > 0 && (
-                  <Button onClick={() => void corrigerDesdeImagen()} disabled={enCorrection || !account || account.remaining === 0}>
+                  <Button onClick={() => account?.remaining === 0 ? void navigate({ to: "/planes" }) : void corrigerDesdeImagen()} disabled={enCorrection || !account}>
                     {enCorrection ? <Loader2 className="animate-spin" /> : <Sparkles />}
-                    {t(enCorrection ? "Leyendo los archivos…" : "Evaluar los archivos")}
+                    {t(enCorrection ? "Leyendo los archivos…" : account?.remaining === 0 ? "Planes" : "Evaluar los archivos")}
                   </Button>
                 )}
               </div>
@@ -439,7 +442,8 @@ function RedactionContent() {
         </Badge>}
       </div>
 
-      {view === "exam" && <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground"><span>{account ? t("Evaluaciones gratis restantes: {count}",{count:account.remaining}) : t("Procesando…")}</span><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>}
+      {view === "exam" && account?.remaining === 0 && <p role="status" className="mt-4 text-sm font-medium text-primary">{t("Has agotado tus consultas. Elige un plan para continuar.")}</p>}
+      {view === "exam" && <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground"><span>{account ? t("Consultas disponibles: {count}",{count:account.remaining}) : t("Procesando…")}</span><Button asChild variant="link"><Link to="/planes">{t("Planes")}</Link></Button></div>}
       <div className="mt-3 flex gap-2" role="group" aria-label={t("Simulación de examen")}>
         <Button variant={view === "exam" ? "secondary" : "ghost"} aria-pressed={view === "exam"} onClick={() => setView("exam")}>{t("Redactar")}</Button>
         <Button variant={view === "review" ? "secondary" : "ghost"} aria-pressed={view === "review"} onClick={() => setView("review")}>{t("Revisión")}</Button>
@@ -560,9 +564,9 @@ function RedactionContent() {
                     {t("Corrigiendo tu redacción… puede tardar un minuto.")}
                   </p>
                 ) : texte && imagenes.length === 0 ? (
-                  <Button variant="secondary" onClick={() => void corriger()} disabled={!account || account.remaining === 0}>
+                  <Button variant="secondary" onClick={() => account?.remaining === 0 ? void navigate({ to: "/planes" }) : void corriger()} disabled={!account}>
                     <Sparkles />
-                    {t(correction ? "Corregir de nuevo" : "Corregir con IA")}
+                    {t(account?.remaining === 0 ? "Planes" : correction ? "Corregir de nuevo" : "Corregir con IA")}
                   </Button>
                 ) : null}
                 {correction && (
