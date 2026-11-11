@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowUpRight, BookOpen, CloudCheck, FileText, PenLine, Save, ShieldCheck, Sparkles, TrendingUp, UserRound } from "lucide-react";
-import { getAccount } from "@/lib/account.functions";
+import { getAccount, cancelStudentPlan } from "@/lib/account.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -47,11 +47,18 @@ function AccountPage() {
     </section>
 
     <section className="mt-7 grid gap-4 sm:grid-cols-3" aria-label={t("Tu actividad")}>
-      <article className="rounded-lg border bg-primary p-6 text-primary-foreground"><Sparkles className="size-5" /><p className="mt-4 text-4xl font-bold">{data.remaining}</p><p className="mt-2 text-sm">{t("Intentos disponibles")}</p><span className="sr-only">{t("Evaluaciones gratis restantes: {count}", { count: data.remaining })}</span></article>
+      <article className="rounded-lg border bg-primary p-6 text-primary-foreground"><Sparkles className="size-5" /><p className="mt-4 text-4xl font-bold">{data.remaining}</p><p className="mt-2 text-sm">{t("Intentos disponibles")}</p><span className="sr-only">{t("Consultas disponibles: {count}", { count: data.remaining })}</span></article>
       <article className="rounded-lg border bg-card p-6"><FileText className="size-5 text-primary" /><p className="mt-4 text-4xl font-bold">{loading || error ? "—" : tentatives.length}</p><p className="mt-2 text-sm text-muted-foreground">{t("Ensayos guardados")}</p></article>
       <article className="rounded-lg border bg-card p-6"><TrendingUp className="size-5 text-success" /><p className="mt-4 text-4xl font-bold">{loading || error ? "—" : latestResult ? `${latestResult.global} %` : "—"}</p><p className="mt-2 text-sm text-muted-foreground">{t("Último resultado")}</p></article>
     </section>
 
+    {data.remaining === 0 && <div className="mt-6 flex flex-wrap items-center gap-3"><p>{t("Has agotado tus consultas. Elige un plan para continuar.")}</p><Button asChild><Link to="/planes">{t("Planes")}</Link></Button></div>}
+    {data.paid && <section className="mt-6 border-y py-5"><p>{t("Acceso hasta: {date}", { date: data.validUntil ? new Date(data.validUntil).toLocaleDateString(locale) : "—" })}</p>{data.cancellable && <Button className="mt-3" variant="outline" disabled={busy} onClick={async () => {
+      if (!window.confirm(t("¿Cancelar el plan Étudiant? Mantendrás el acceso hasta la fecha de vencimiento."))) return;
+      setBusy(true); setMessage("");
+      try { await cancelStudentPlan(); await queryClient.invalidateQueries({ queryKey: ["account"] }); setMessage("Plan cancelado. Conservas el acceso hasta su vencimiento."); }
+      catch { setMessage("No se pudo cancelar. Inténtalo de nuevo."); } finally { setBusy(false); }
+    }}>{t("Cancelar suscripción")}</Button>}</section>}
     <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
       <section className="min-w-0"><div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-xl font-bold tracking-normal">{t("Tu actividad")}</h2><Button asChild variant="link"><Link to="/progres">{t("Ver mi progreso")}<ArrowUpRight /></Link></Button></div>
         {loading ? <p className="py-8 text-sm text-muted-foreground">{t("Procesando…")}</p> : error ? <div className="py-8"><p role="alert">{t("No se pudo cargar el progreso. Inténtalo de nuevo.")}</p><Button variant="outline" className="mt-3" onClick={() => void retry()}>{t("Reintentar")}</Button></div> : latest && latestResult ? <article className="mt-4 rounded-lg border bg-card p-5"><div className="flex items-center justify-between gap-4"><p className="text-xs text-muted-foreground">{new Date(latest.date).toLocaleDateString(locale)}</p><Badge variant={latestResult.reussi ? "secondary" : "outline"}>{t(latestResult.verdict)}</Badge></div><h3 className="mt-4 text-base font-semibold tracking-normal" lang="fr" dir="ltr">{latest.sujetEnonce}</h3><div className="mt-5 grid grid-cols-3 gap-2 border-t pt-4">{[["Argumentación", latestResult.coteI], ["Estructura", latestResult.coteII], ["Lengua", latestResult.coteIII]].map(([label, grade]) => <div key={label}><p className="break-words text-xs text-muted-foreground">{t(label)}</p><p className="mt-1 text-xl font-bold">{grade}</p></div>)}</div></article> : <div className="mt-4 border-y py-8"><BookOpen className="mb-3 size-7 text-primary" /><p className="text-sm text-muted-foreground">{t("Todavía no hay ensayos. Empieza con un sujet y tu primera dissertation.")}</p></div>}
