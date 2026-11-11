@@ -1,49 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpenText, Check, Crown, FileCheck2, GraduationCap, LockKeyhole, Sparkles, Sprout, TrendingUp } from "lucide-react";
+import { Check, GraduationCap, LockKeyhole } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
-import { PLAN_TIERS, FREE_EVALUATIONS } from "@/lib/plans";
+import { PLAN_TIERS, PLAN_CURRENCY } from "@/lib/plans";
 export const Route = createFileRoute("/planes")({
-  head: () => ({ meta: [{ title: "Planes de práctica | ÉUF | EUF pro" }, { name: "description", content: "Dos evaluaciones gratuitas y planes de 20, 50 o 100 USD al mes con descuento anual." }, { property: "og:title", content: "Planes ÉUF | EUF pro" }, { property: "og:description", content: "Práctica gratuita y planes de 20, 50 o 100 USD al mes de ÉUF." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: PlansPage,
+  head: () => ({ meta: [{ title: "Forfaits en dollars canadiens | EUF pro" }, { name: "description", content: "Une évaluation gratuite, Étudiant à 15 CAD par mois, Sprint ÉUF à 24,99 CAD pour 60 jours et licences institutionnelles." }, { property: "og:title", content: "Forfaits ÉUF | EUF pro" }, { property: "og:description", content: "Une seule évaluation gratuite. Révision avec forfait payant. Abonnement Étudiant résiliable à tout moment." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: PlansPage,
 });
 function PlansPage() {
-  const {t}=useLanguage();
-  return (
-    <AppShell>
-      <section className="border-b pb-7">
-        <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary"><GraduationCap className="size-5" />ÉUF · {t("Dissertation critique · Montréal")}</p>
-        <h1 className="font-display text-4xl font-bold tracking-normal sm:text-5xl">{t("Planes")}</h1>
-      </section>
-
-      <div className="mt-8 grid gap-5 lg:grid-cols-3">
-        {PLAN_TIERS.map((tier) => {
-          const featured = tier.id === "avanzado";
-          const premium = tier.id === "premium";
-          const Icon = featured ? TrendingUp : premium ? Crown : Sprout;
-          const tone = featured ? "bg-primary text-primary-foreground" : premium ? "bg-accent text-accent-foreground" : "bg-success/15 text-success";
-          return <article key={tier.id} className={`relative flex min-w-0 flex-col overflow-hidden rounded-lg border bg-card shadow-soft transition-shadow motion-safe:duration-300 hover:shadow-lift ${featured ? "border-primary ring-1 ring-primary" : "border-border"}`}>
-            <div className={`flex min-h-11 items-center justify-between gap-2 px-6 py-3 text-xs font-semibold ${tone}`}><span>{t(featured ? "Práctica constante" : premium ? "Preparación intensiva" : "Primeros pasos")}</span><Icon className="size-4 shrink-0" /></div>
-            <div className="flex flex-1 flex-col p-6 sm:p-7">
-              <div className="flex items-center justify-between gap-3"><h2 className="text-2xl font-bold tracking-normal">{t(tier.labelKey)}</h2><Icon className={`size-6 ${featured ? "text-primary" : premium ? "text-accent-foreground" : "text-success"}`} /></div>
-              <div className="mt-7 flex flex-wrap items-baseline gap-x-2 gap-y-1"><p className="flex items-baseline gap-1 font-display font-bold" dir="ltr"><span className="text-sm text-muted-foreground">US$</span><span className="text-5xl">{tier.monthlyPrice}</span></p><span className="text-sm text-muted-foreground">/ {t("por mes")}</span></div>
-              <p className="mt-3 flex flex-wrap items-center gap-x-1 text-sm text-muted-foreground"><span>{t("o")}</span><span className="font-semibold text-foreground" dir="ltr">US${tier.annualPrice.toLocaleString("en-US")}</span><span>{t("por año")}</span></p>
-              <div className="mt-7 space-y-5 border-y py-6">
-                <div className="flex items-start gap-3"><FileCheck2 className="mt-1 size-5 shrink-0 text-primary" /><div><span className="text-3xl font-bold">{tier.monthlyEvaluations}</span><p className="mt-1 text-sm text-muted-foreground">{t("evaluaciones de examen por mes")}</p></div></div>
-                <div className="flex items-start gap-3"><GraduationCap className="mt-1 size-5 shrink-0 text-primary" /><div><span className="text-3xl font-bold">{tier.monthlyProfessorConsultations}</span><p className="mt-1 text-sm text-muted-foreground">{t("consultas al profesor por mes")}</p></div></div>
-              </div>
-              <ul className="mt-6 space-y-3 text-sm">{["Progreso en tu cuenta", "Ortografía y sintaxis"].map(label => <li key={label} className="flex items-center gap-2"><Check className="size-4 shrink-0 text-success" />{t(label)}</li>)}</ul>
-              <Button disabled variant={featured ? "default" : "outline"} size="lg" className="mt-7 w-full disabled:opacity-80"><LockKeyhole />{t("Próximamente")}</Button>
-            </div>
-          </article>;
-        })}
-      </div>
-
-      <section className="mt-8 flex flex-wrap items-center justify-between gap-5 border-y py-6">
-        <div className="flex min-w-0 items-center gap-4"><span className="grid size-12 shrink-0 place-items-center rounded-full bg-secondary text-primary"><BookOpenText className="size-6" /></span><div><h2 className="text-lg font-bold tracking-normal">{t("Gratis")}</h2><p className="mt-1 text-sm text-muted-foreground"><span className="font-bold text-foreground">{FREE_EVALUATIONS}</span> {t("evaluaciones por cuenta")}</p></div></div>
-        <Button asChild size="lg"><Link to="/redaction" search={{sujet:undefined}}>{t("Empezar ahora")}<ArrowRight /></Link></Button>
-      </section>
-      <p className="mt-5 flex items-center gap-2 text-sm text-muted-foreground"><Sparkles className="size-4 shrink-0" />{t("Los pagos todavía no están disponibles.")}</p>
-    </AppShell>
-  );
+  const { t, locale } = useLanguage();
+  const money = (value: number) => new Intl.NumberFormat(locale, { style: "currency", currency: PLAN_CURRENCY }).format(value);
+  return <AppShell>
+    <section className="border-b pb-7"><p className="flex items-center gap-2 text-sm font-semibold text-primary"><GraduationCap className="size-5" />EUF pro · CAD</p><h1 className="mt-3 font-display text-4xl font-bold">{t("Planes")}</h1></section>
+    <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">{PLAN_TIERS.map(plan => {
+      const features = plan.id === "gratuit" ? ["Una evaluación gratis por cuenta, solo en Redactar", "La revisión requiere un plan de pago"] : plan.id === "etudiant" ? ["30 consultas de IA al mes, entre evaluación y revisión", "Progreso en tu cuenta", "Cancela cuando quieras"] : plan.id === "sprint" ? ["60 consultas de IA durante 60 días, entre evaluación y revisión", "Pago único, sin renovación automática", "Progreso en tu cuenta"] : ["Licencia para grupos", "Precio y cupos a convenir"];
+      return <article key={plan.id} className={`flex min-w-0 flex-col rounded-lg border bg-card p-6 shadow-soft ${plan.id === "etudiant" ? "border-primary ring-1 ring-primary" : "border-border"}`}>
+        <h2 className="text-xl font-bold">{t(plan.labelKey)}</h2><p className="mt-6 break-words font-display text-3xl font-bold">{plan.price === null ? t("A convenir") : money(plan.price)}</p><p className="mt-2 text-sm text-muted-foreground">{t(plan.period === "monthly" ? "por mes" : plan.period === "one_time" ? "Pago único · 60 días" : plan.period === "free" ? "Una sola prueba" : "Para instituciones")}</p>
+        <ul className="my-7 flex-1 space-y-3 text-sm">{features.map(f => <li key={f} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-primary" /><span>{t(f)}</span></li>)}</ul>
+        {plan.id === "gratuit" ? <Button asChild variant="outline"><Link to="/redaction" search={{ sujet: undefined }}>{t("Empezar ahora")}</Link></Button> : <Button disabled variant={plan.id === "etudiant" ? "default" : "outline"}><LockKeyhole />{t("Próximamente")}</Button>}
+      </article>;
+    })}</div><p className="mt-6 text-sm text-muted-foreground">{t("Los pagos todavía no están disponibles.")}</p>
+  </AppShell>;
 }
