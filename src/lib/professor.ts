@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-export const FREE_PROFESSOR_REVIEWS = 1;
+export const FREE_PROFESSOR_REVIEWS = 0;
 export type ProfessorAccess = { allowed: boolean; denial: string | null; remaining: number; paid: boolean; busy: boolean };
 export function parseProfessorAccess(value: unknown): ProfessorAccess {
   const access = value && typeof value === "object" ? value as Record<string, unknown> : {};
-  return { allowed: access.allowed === true, denial: typeof access.denial === "string" ? access.denial : null,
-    remaining: typeof access.remaining === "number" ? Math.max(0, Math.min(FREE_PROFESSOR_REVIEWS, access.remaining)) : 0,
+  return { allowed: access.allowed === true && access.paid === true, denial: typeof access.denial === "string" ? access.denial : null,
+    remaining: typeof access.remaining === "number" ? access.paid === true ? Math.max(0, access.remaining) : 0 : 0,
     paid: access.paid === true, busy: access.busy === true };
 }
 
