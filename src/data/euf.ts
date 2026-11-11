@@ -344,6 +344,241 @@ export const SUJETS: Sujet[] = [
       },
     ],
   },
+  {
+    id: "ru-refugies",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Peut-on dire que l'extrait du roman Ru de Kim Thúy trace un portrait sombre de la vie des réfugiés ?",
+    corpus: "Kim Thúy, Ru (2009).",
+    epoque: "XXIe siècle — écritures migrantes",
+    cahier: "Épreuve uniforme de français — 14 décembre 2016",
+    pistes: [
+      "Relever les images liées à la mer, à la fuite et au camp de réfugiés.",
+      "Observer le regard de la narratrice enfant sur l'exil et la perte des repères.",
+      "Nuancer : le portrait est sombre, mais laisse-t-il une place à l'espoir et à la résilience ?",
+    ],
+    extraits: [],
+  },
+  {
+    id: "situation-orphelin",
+    rang: "Sujet d'examen",
+    type: "Sujet de comparaison",
+    enonce:
+      "Dans ces extraits des romans Le souffle de l'harmatan de Sylvain Trudel et La vie devant soi de Romain Gary, est-il vrai d'affirmer que la situation d'orphelin est vécue de la même façon ?",
+    corpus:
+      "Sylvain Trudel, Le souffle de l'harmatan (1986) · Romain Gary, La vie devant soi (1975).",
+    epoque: "XXe siècle — roman de l'enfance",
+    cahier: "Épreuve uniforme de français — 14 décembre 2016",
+    pistes: [
+      "Comparer la voix narrative des deux enfants et leur façon de nommer l'abandon.",
+      "Observer les figures de remplacement : qui entoure chaque orphelin ?",
+      "Nuancer : même réalité d'orphelin, mais registres et tonalités différents.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "fees-ont-soif",
+    rang: "Sujet d'examen",
+    type: "Sujet de comparaison",
+    enonce:
+      "Est-il vrai d'affirmer que, dans la pièce de théâtre Les fées ont soif de Denise Boucher, les personnages de Marie et de Madeleine vivent une quête de liberté semblable ?",
+    corpus: "Denise Boucher, Les fées ont soif (1978).",
+    epoque: "XXe siècle — théâtre québécois et féminisme",
+    cahier: "Épreuve uniforme de français — 18 décembre 2018",
+    pistes: [
+      "Comparer les deux parcours : la mère au foyer et la prostituée.",
+      "Relever les monologues et les ruptures de ton qui expriment la révolte.",
+      "Nuancer : quête commune de liberté, mais moyens et issues différents.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "rentree-scolaire",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Peut-on dire que, dans l'extrait du roman Ces enfants de ma vie de Gabrielle Roy, la rentrée scolaire est une expérience positive ?",
+    corpus: "Gabrielle Roy, Ces enfants de ma vie (1977).",
+    epoque: "XXe siècle — récit autobiographique",
+    cahier: "Épreuve uniforme de français — 8 août 2018",
+    pistes: [
+      "Observer les scènes de larmes (Roger, Vincento) face aux moments de joie (le dessin au tableau).",
+      "Analyser le regard rétrospectif de la narratrice, chargé d'émotion et d'humour.",
+      "Nuancer : expérience d'abord éprouvante, mais qui se transforme en bonheur partagé.",
+    ],
+    extraits: [
+      {
+        etiquette: "Texte unique",
+        auteur: "Gabrielle Roy",
+        noticeAuteur: "Romancière franco-manitobaine, née en 1909 et décédée en 1983.",
+        titre: "Ces enfants de ma vie",
+        annee: "1977",
+        source: "Épreuve officielle",
+        presentation:
+          "La narratrice, une jeune institutrice, se souvient du matin de la rentrée dans une école de garçons, en ville. Elle avait la classe des tout-petits, dont plusieurs petits immigrants.",
+        reference:
+          "Gabrielle ROY, Ces enfants de ma vie, Montréal, Les Éditions du Boréal, coll. Boréal compact, 2013, p. 9-15.",
+        paragraphes: [
+          "En repassant, comme il m'arrive souvent, ces temps-ci, par mes années de jeune institutrice, dans une école de garçons, en ville, je revis, toujours aussi chargé d'émotion, le matin de la rentrée. J'avais la classe des tout-petits. C'était leur premier pas dans un monde inconnu. À la peur qu'ils en avaient tous plus ou moins, s'ajoutait, chez quelques-uns de mes petits immigrants, le désarroi, en y arrivant, de s'entendre parler dans une langue qui leur était étrangère.",
+          "Tôt, ce matin-là, me parvinrent des cris d'enfant que les hauts plafonds et les murs résonnants amplifiaient. J'allai sur le seuil de ma classe. Du fond du corridor s'en venait à l'allure d'un navire une forte femme traînant par la main un petit garçon hurlant. Tout minuscule auprès d'elle, il parvenait néanmoins par moments à s'arc-bouter et, en tirant de toutes ses forces, à freiner un peu leur avance. Elle, alors, l'empoignait plus solidement, le soulevait de terre et l'emportait un bon coup encore. Et elle riait de le voir malgré tout si difficile à manœuvrer. Ils arrivèrent à l'entrée de ma classe où je les attendais en m'efforçant d'avoir l'air sereine.",
+          "La mère, dans un lourd accent flamand, me présenta son fils, Roger Verhaegen, cinq ans et demi, bon petit garçon très doux, très docile, quand il le voulait bien — hein Roger! — cependant que, d'une secousse, elle tâchait de le faire taire. J'avais déjà quelque expérience des mères, des enfants, et me demandai si celle-ci, forte comme elle pouvait en avoir l'air, n'en était pas moins du genre à se décharger sur les autres de son manque d'autorité, ayant sans doute tous les jours menacé : « Attends, toi, d'aller à l'école, pour te faire dompter. »",
+          "[…]",
+          "Après, je fus entourée tout à coup de plusieurs mères et d'autant d'enfants. L'un d'eux n'arrêtait pas de geindre à petits cris rentrés. La morne plainte atteignit Roger, moins consolé que je ne l'avais cru. Il repartit à sangloter en accompagnement de l'enfant inconnu. D'autres qui avaient été paisibles jusque-là se joignirent à eux. C'est dans cette désolation que je devais procéder à l'inscription. Et d'autres enfants encore arrivaient qui, se découvrant dans un lieu de larmes, se mettaient à chigner.",
+          "[…]",
+          "Un peu plus tard, trente-cinq enfants inscrits et à peu près tranquillisés, je commençais à respirer, je me prenais à espérer la fin du cauchemar, pensant : maintenant j'ai dépassé le plus noir. Je voyais de petits visages sur lesquels j'étais encore en peine de mettre un nom m'adresser un premier sourire furtif ou, en passant, une caresse du regard. Je me disais : nous allons vers l'amitié… lorsque, soudain, du corridor, nous parvint un autre cri de douleur […] une autre scène de séparation.",
+          "Le petit, cramponné à son père, levait vers lui un visage inondé de larmes. Dans leur langue italienne, il le suppliait, à ce qu'il me parut, de ne pas l'abandonner, par la grâce du ciel de ne pas l'abandonner!",
+          "Presque aussi bouleversé, le père s'efforçait de rassurer son petit garçon. Il lui passait la main dans les cheveux, sur les joues, lui essuyait les yeux, le câlinait, le berçait de mots tendres maintes et maintes fois répétés qui semblaient signifier : Tout ira bien… Tu verras… C'est ici une bonne école… « Benito… Benito… » insistait-il. Mais l'enfant lançait toujours son appel désespéré : « La casa! la casa! »",
+          "[…]",
+          "J'allai à leur rencontre avec le plus large sourire possible. À mon approche l'enfant cria de frayeur et se cramponna encore plus fortement à son père à qui il communiqua son tremblement. Je vis que celui-ci n'allait pas m'être d'un grand secours. Au contraire, par ses caresses, ses mots doux, il n'aboutissait qu'à entretenir chez l'enfant l'espoir qu'il le ferait fléchir.",
+          "Et, de fait, le père se mit à plaider avec moi. Puisque le petit était si malheureux, ne valait-il pas mieux pour cette fois le ramener à la maison, quitte à essayer encore cet après-midi ou le lendemain, alors qu'il aurait eu le temps de bien expliquer à l'enfant ce qu'était l'école?",
+          "Je les vis suspendus à ma décision, et pris mon courage à deux mains : « Non, quand il faut couper la branche, rien ne donne d'attendre. »",
+          "Le père abaissa tristement les yeux, obligé de me donner raison. Il s'efforça de m'aider un peu. Même à deux nous eûmes beaucoup de peine à détacher l'enfant, desserrions-nous une main qu'aussitôt elle nous échappait pour s'agripper de nouveau aux vêtements du père. Le curieux était que tout en s'accrochant à son père, il lui en voulait de s'être mis de mon côté et le traitait à travers ses larmes et ses hoquets de sans-cœur et de vaurien.",
+          "Enfin le père fut libre un instant pendant que je retenais le petit garçon de peine et de misère. Je lui fis signe de partir au plus vite. Il franchit le seuil. Je fermai la porte derrière lui. Il la rouvrit d'un doigt pour me désigner le petit du regard en disant :\n— C'est Vincento!",
+          "[…]",
+          "Vincento, son sort entre ses seules mains, parut désespérément chercher un plan d'attaque, une stratégie, puis, comme s'il n'y avait vraiment rien devant lui, il poussa un terrible soupir, son courage l'abandonna, il rendit les armes. Il ne fut plus qu'une petite créature brisée sans soutien ni ami dans un monde étranger. Il courut se blottir par terre dans un coin, la tête enfouie dans ses mains, enroulé sur lui-même et gémissant comme un petit chien perdu.",
+          "[…]",
+          "Il était grand temps de faire diversion. J'ouvris une boîte de craies de couleur et en fis la distribution, invitant les enfants à venir au tableau y dessiner chacun sa maison. Ceux qui d'abord ne saisirent pas le sens de mes paroles, comprirent dès qu'ils eurent vu de leurs compagnons en train d'esquisser des carrés munis de trous pour indiquer portes et fenêtres. Allègrement ils se mirent à en faire autant et, selon leur conception égalitaire au possible, il parut que tous habitaient à peu près la même maison.",
+          "Je dressai en haut du tableau un bâtiment qui était ni plus ni moins que les maisons mises bout à bout et les unes au-dessus des autres. Les enfants reconnurent leur école et se prirent à rire dans leur contentement de se situer. Je traçai maintenant un chemin descendant de l'école vers le bas où étaient les maisons. Mon gai petit élève eut le premier l'idée de se représenter sur cette route par un bâton surmonté d'un rond où les yeux étaient placés sur les côtés de la tête comme souvent chez les insectes. Alors tous voulurent être sur cette route. Elle se couvrit de petits bonshommes s'en allant à l'école ou en revenant.",
+          "J'écrivis le nom de chacun dans un ballon au-dessus des images. Ma classe en fut enchantée. Quelques-uns se plurent à ajouter à leur personnage quelque détail qui le distinguerait des autres. Roger, qui était arrivé en chapeau de paille de fermier, travailla bien fort à coiffer le bâton qui le représentait. Cela fournit le curieux spectacle d'une énorme boule se mouvant sur de petits bouts de jambe. Roger se prit à rire aussi fort qu'il avait pleuré. Une sorte de bonheur commençait à habiter ma classe.",
+          "Je jetai un coup d'œil sur Vincento. Ses gémissements s'espaçaient. Sans se hasarder à découvrir son visage, il tâchait entre ses doigts écartés de suivre ce qui se passait et qui apparemment l'étonnait beaucoup. Surpris à un moment d'entendre rire, il s'oublia à laisser retomber une de ses mains. Dans un fin regard il découvrit que tous sauf lui avaient leur maison et leur nom au tableau. Sur son petit visage gonflé et rougi par les larmes, se peignit, au milieu de la détresse, le désir d'y être lui aussi représenté.",
+          "Je m'avançai vers lui, un bâton de craie à la main, me faisant toute conciliante.\n— Viens donc, Vincento, dessiner la maison où tu habites avec ton papa et ta maman.",
+          "Ses troublants yeux de braise aux longs cils soyeux me regardèrent en face. Je ne savais que penser de leur expression, ni hostile ni confiante. J'avançai encore d'un pas. Soudain, il se souleva et, en équilibre sur un pied, détendit l'autre comme sous la poussée d'un ressort. Il m'atteignit en pleine jambe de la pointe de sa bottine ferrée. Cette fois, je ne pus réprimer une grimace. Vincento en eut l'air ravi. Quoique le dos au mur et accroupi, il faisait front, me donnant à entendre que de lui à moi ce ne pouvait être qu'œil pour œil, dent pour dent. […] Plus qu'une peine d'âme, la rancune semblait maintenant le tenir.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "liberation-meres",
+    rang: "Sujet d'examen",
+    type: "Sujet de comparaison",
+    enonce:
+      "Dans l'extrait de la pièce de théâtre Encore cinq minutes de Françoise Loranger et dans l'extrait de la pièce Les fées ont soif de Denise Boucher, peut-on dire que la libération des mères est présentée de la même façon ?",
+    corpus:
+      "Françoise Loranger, Encore cinq minutes (1967) · Denise Boucher, Les fées ont soif (1978).",
+    epoque: "XXe siècle — théâtre québécois",
+    cahier: "Épreuve uniforme de français — 18 décembre 2019",
+    pistes: [
+      "Comparer la condition des mères dans les deux pièces et ce qui les enchaîne.",
+      "Observer le ton : humour et ironie chez Loranger, révolte lyrique chez Boucher.",
+      "Nuancer : libération souhaitée dans les deux cas, mais contextes et portée différents.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "defaitisme",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Dans l'extrait du roman Poussière sur la ville d'André Langevin, peut-on affirmer que le défaitisme domine ?",
+    corpus: "André Langevin, Poussière sur la ville (1953).",
+    epoque: "XXe siècle — roman québécois classique",
+    cahier: "Épreuve uniforme de français — 18 décembre 2019",
+    pistes: [
+      "Relever le vocabulaire de l'échec, de la fatigue et de l'enfermement.",
+      "Observer le cadre : la petite ville poussiéreuse comme reflet de l'état d'âme.",
+      "Nuancer : le défaitisme domine-t-il sans partage ou subsiste-t-il une lueur de révolte ?",
+    ],
+    extraits: [],
+  },
+  {
+    id: "pays-accueil",
+    rang: "Sujet d'examen",
+    type: "Sujet de comparaison",
+    enonce:
+      "Est-il juste d'affirmer que la découverte du pays d'accueil est vécue de la même façon dans l'extrait de la nouvelle « Jaune et blanc » de Monique Proulx et dans l'extrait du roman Le pavillon des miroirs de Sergio Kokis ?",
+    corpus:
+      "Monique Proulx, « Jaune et blanc » · Sergio Kokis, Le pavillon des miroirs (1994).",
+    epoque: "XXe-XXIe siècle — écritures migrantes",
+    cahier: "Épreuve uniforme de français — 18 mai 2022",
+    pistes: [
+      "Comparer les premières impressions du Québec : émerveillement, choc, dépaysement.",
+      "Observer le rôle des sens (couleurs, froid, lumière) dans la découverte.",
+      "Nuancer : même thème de l'arrivée, mais regards et tonalités contrastés.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "portrait-moliere",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Peut-on dire que l'extrait de la pièce de théâtre « Le roi attend » de George Sand propose un portrait élogieux de Molière ?",
+    corpus: "George Sand, « Le roi attend ».",
+    epoque: "XIXe siècle — théâtre français",
+    cahier: "Épreuve uniforme de français — 18 mai 2022",
+    pistes: [
+      "Relever les éloges explicites : le génie, le courage, l'art de Molière.",
+      "Observer la situation dramatique : Molière attendu par le roi, au sommet de sa gloire.",
+      "Nuancer : portrait élogieux, mais la pièce montre-t-elle aussi ses fragilités ?",
+    ],
+    extraits: [],
+  },
+  {
+    id: "regard-aviation",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Peut-on affirmer que, dans l'extrait du récit autobiographique Terre des hommes d'Antoine de Saint-Exupéry, le narrateur porte un regard favorable sur le monde de l'aviation ?",
+    corpus: "Antoine de Saint-Exupéry, Terre des hommes (1939).",
+    epoque: "XXe siècle — récit autobiographique",
+    cahier: "Épreuve uniforme de français — 9 août 2023",
+    pistes: [
+      "Relever les images de grandeur : le ciel, la machine, la camaraderie des pilotes.",
+      "Observer la dimension philosophique : l'avion comme outil de découverte de l'humain.",
+      "Nuancer : regard favorable, mais teinté de conscience du danger et de la fragilité.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "argent-saccard",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Est-il juste d'affirmer que, dans l'extrait du roman L'argent d'Émile Zola, l'argent est la principale préoccupation d'Aristide Saccard ?",
+    corpus: "Émile Zola, L'argent (1891).",
+    epoque: "XIXe siècle — naturalisme français",
+    cahier: "Épreuve uniforme de français — 18 décembre 2024",
+    pistes: [
+      "Relever le vocabulaire de la spéculation, de la Bourse et de la fortune.",
+      "Observer les gestes et le regard de Saccard : l'argent comme passion dévorante.",
+      "Nuancer : l'argent est-il une fin en soi ou un moyen de puissance et de rêve ?",
+    ],
+    extraits: [],
+  },
+  {
+    id: "oceano-nox",
+    rang: "Sujet d'examen",
+    type: "Sujet d'analyse",
+    enonce:
+      "Peut-on dire que le poète associe la disparition à la tristesse dans le poème « Oceano nox » de Victor Hugo ?",
+    corpus: "Victor Hugo, « Oceano nox », Les Rayons et les Ombres (1840).",
+    epoque: "XIXe siècle — poésie romantique",
+    cahier: "Épreuve uniforme de français — 18 décembre 2024",
+    pistes: [
+      "Relever les images de la mer, de la nuit et de l'attente des disparus.",
+      "Observer le rythme et les sonorités qui créent la plainte poétique.",
+      "Nuancer : tristesse dominante, mais aussi hommage et mémoire des marins.",
+    ],
+    extraits: [],
+  },
+  {
+    id: "oiseaux-poesie",
+    rang: "Sujet d'examen",
+    type: "Sujet de comparaison",
+    enonce:
+      "Est-il juste d'affirmer que les oiseaux sont présentés de la même façon dans le poème « Les Corbeaux » d'Émile Nelligan et le poème « Cage d'oiseau » de Hector de Saint-Denys-Garneau ?",
+    corpus:
+      "Émile Nelligan, « Les Corbeaux » · Hector de Saint-Denys-Garneau, « Cage d'oiseau ».",
+    epoque: "XIXe-XXe siècle — poésie québécoise",
+    cahier: "Épreuve uniforme de français — 15 mai 2013",
+    pistes: [
+      "Comparer la symbolique de l'oiseau : menace et fatalité chez Nelligan, enfermement chez Saint-Denys-Garneau.",
+      "Observer les images, les couleurs et la musicalité des deux poèmes.",
+      "Nuancer : motif commun, mais atmosphères et sensibilités distinctes.",
+    ],
+    extraits: [],
+  },
 ];
 
 /** Prochaines dates officielles de l'épreuve uniforme de français. */
