@@ -82,6 +82,7 @@ export type Database = {
         Row: {
           ai_denial_reason: string | null
           plan: string
+          tier: string | null
           status: string
           updated_at: string
           user_id: string
@@ -90,6 +91,7 @@ export type Database = {
         Insert: {
           ai_denial_reason?: string | null
           plan: string
+          tier?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -98,6 +100,7 @@ export type Database = {
         Update: {
           ai_denial_reason?: string | null
           plan?: string
+          tier?: string | null
           status?: string
           updated_at?: string
           user_id?: string
