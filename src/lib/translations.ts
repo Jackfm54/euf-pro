@@ -281,10 +281,10 @@ export const translations: Record<string, Record<Language, string>> = {
     "fr": "Sujets de rédaction",
     "ar": "مواضيع الكتابة"
   },
-  "Los tres sujets del cahier oficial del 14 de diciembre de 2022, con sus textos completos. Elige uno y redacta 900 palabras en 4 h 30.": {
-    "es": "Los tres sujets del cahier oficial del 14 de diciembre de 2022, con sus textos completos. Elige uno y redacta 900 palabras en 4 h 30.",
-    "fr": "Les trois sujets du cahier officiel du 14 décembre 2022, avec leurs textes complets. Choisissez-en un et rédigez 900 mots en 4 h 30.",
-    "ar": "المواضيع الثلاثة من كتيب الامتحان الرسمي بتاريخ ١٤ ديسمبر ٢٠٢٢، مع النصوص الكاملة. اختر موضوعًا واكتب ٩٠٠ كلمة في ٤ ساعات و٣٠ دقيقة."
+  "Quince sujets reales de épreuves anteriores (2010-2024), con el cahier del 14 de diciembre de 2022 completo. Elige uno y redacta 900 palabras en 4 h 30.": {
+    "es": "Quince sujets reales de épreuves anteriores (2010-2024), con el cahier del 14 de diciembre de 2022 completo. Elige uno y redacta 900 palabras en 4 h 30.",
+    "fr": "Quinze sujets réels d'épreuves antérieures (2010-2024), avec le cahier du 14 décembre 2022 complet. Choisissez-en un et rédigez 900 mots en 4 h 30.",
+    "ar": "خمسة عشر موضوعًا حقيقيًا من امتحانات سابقة (2010-2024)، مع كتيب ١٤ ديسمبر ٢٠٢٢ الكامل. اختر موضوعًا واكتب ٩٠٠ كلمة في ٤ ساعات و٣٠ دقيقة."
   },
   "Reglas de la épreuve": {
     "es": "Reglas de la épreuve",
