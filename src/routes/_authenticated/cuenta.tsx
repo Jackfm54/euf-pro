@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowUpRight, BookOpen, CloudCheck, FileText, PenLine, Save, ShieldCheck, Sparkles, TrendingUp, UserRound } from "lucide-react";
-import { getAccount, cancelStudentPlan } from "@/lib/account.functions";
+import { getAccount, cancelStudentPlan, deleteMyAccount } from "@/lib/account.functions";
+import { DELETE_CONFIRMATION_WORD, isDeleteConfirmed } from "@/lib/legal";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -23,6 +24,18 @@ function AccountPage() {
   const [name, setName] = useState(data.displayName);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState("");
+  async function removeAccount() {
+    if (!isDeleteConfirmed(confirmText)) return;
+    setBusy(true); setDeleteMessage("");
+    try {
+      await deleteMyAccount({ data: { confirm: confirmText } });
+      try { localStorage.clear(); } catch { /* optional */ }
+      await supabase.auth.signOut();
+      window.location.assign("/");
+    } catch { setDeleteMessage("No se pudo eliminar la cuenta. Inténtalo de nuevo."); setBusy(false); }
+  }
   const latest = tentatives[0];
   const latestResult = latest ? resultat(latest) : null;
   async function save(e: React.FormEvent) {
@@ -66,5 +79,12 @@ function AccountPage() {
       </section>
       <section className="min-w-0 border-t pt-6 lg:border-s lg:border-t-0 lg:ps-8 lg:pt-0"><h2 className="text-xl font-bold tracking-normal">{t("Datos personales")}</h2><div className="mt-5"><p className="text-sm font-medium">{t("Correo electrónico")}</p><p className="mt-1 break-all text-sm text-muted-foreground" dir="ltr">{user?.email}</p></div><form className="mt-6 space-y-3" onSubmit={save}><Label htmlFor="display-name">{t("Nombre")}</Label><Input id="display-name" required maxLength={100} value={name} onChange={e => setName(e.target.value)} /><Button disabled={busy || !name.trim()} type="submit"><Save />{t(busy ? "Procesando…" : "Guardar")}</Button>{message && <p role="status" className="text-sm">{t(message)}</p>}</form><div className="mt-7 flex items-start gap-3 border-t pt-5 text-sm text-muted-foreground"><ShieldCheck className="mt-0.5 size-5 shrink-0 text-success" /><span>{t("Cuenta privada")}</span></div></section>
     </div>
+    <section className="mt-10 rounded-lg border border-destructive/40 p-6">
+      <h2 className="text-xl font-bold text-destructive">{t("Eliminar mi cuenta")}</h2>
+      <p className="mt-2 text-sm text-muted-foreground">{t("Se borrarán definitivamente tu cuenta, tus redacciones y tu progreso. Esta acción no se puede deshacer.")}</p>
+      <Label htmlFor="delete-confirm" className="mt-4 block">{t("Escribe {word} para confirmar", { word: DELETE_CONFIRMATION_WORD })}</Label>
+      <div className="mt-2 flex flex-wrap gap-2"><Input id="delete-confirm" dir="ltr" className="max-w-xs" value={confirmText} onChange={e => setConfirmText(e.target.value)} /><Button variant="destructive" disabled={busy || !isDeleteConfirmed(confirmText)} onClick={removeAccount}>{t("Eliminar mi cuenta")}</Button></div>
+      {deleteMessage && <p role="alert" className="mt-2 text-sm text-destructive">{t(deleteMessage)}</p>}
+    </section>
   </AppShell>;
 }
