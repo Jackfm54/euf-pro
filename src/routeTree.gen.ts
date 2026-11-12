@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ConditionsRouteImport } from './routes/conditions'
+import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as GuideRouteImport } from './routes/guide'
 import { Route as PlanesRouteImport } from './routes/planes'
 import { Route as ReglesRouteImport } from './routes/regles'
@@ -35,6 +37,16 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConditionsRoute = ConditionsRouteImport.update({
+  id: '/conditions',
+  path: '/conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
+  id: '/confidentialite',
+  path: '/confidentialite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuideRoute = GuideRouteImport.update({
@@ -92,6 +104,8 @@ const AuthenticatedRedactionRoute = AuthenticatedRedactionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/guide': typeof GuideRoute
   '/planes': typeof PlanesRoute
   '/regles': typeof ReglesRoute
@@ -106,6 +120,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/guide': typeof GuideRoute
   '/planes': typeof PlanesRoute
   '/regles': typeof ReglesRoute
@@ -122,6 +138,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/guide': typeof GuideRoute
   '/planes': typeof PlanesRoute
   '/regles': typeof ReglesRoute
@@ -138,6 +156,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/conditions'
+    | '/confidentialite'
     | '/guide'
     | '/planes'
     | '/regles'
@@ -152,6 +172,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/conditions'
+    | '/confidentialite'
     | '/guide'
     | '/planes'
     | '/regles'
@@ -167,6 +189,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/conditions'
+    | '/confidentialite'
     | '/guide'
     | '/planes'
     | '/regles'
@@ -183,6 +207,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ConditionsRoute: typeof ConditionsRoute
+  ConfidentialiteRoute: typeof ConfidentialiteRoute
   GuideRoute: typeof GuideRoute
   PlanesRoute: typeof PlanesRoute
   ReglesRoute: typeof ReglesRoute
@@ -212,6 +238,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conditions': {
+      id: '/conditions'
+      path: '/conditions'
+      fullPath: '/conditions'
+      preLoaderRoute: typeof ConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confidentialite': {
+      id: '/confidentialite'
+      path: '/confidentialite'
+      fullPath: '/confidentialite'
+      preLoaderRoute: typeof ConfidentialiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guide': {
@@ -308,6 +348,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ConditionsRoute: ConditionsRoute,
+  ConfidentialiteRoute: ConfidentialiteRoute,
   GuideRoute: GuideRoute,
   PlanesRoute: PlanesRoute,
   ReglesRoute: ReglesRoute,
