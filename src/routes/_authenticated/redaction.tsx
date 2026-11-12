@@ -60,13 +60,13 @@ export const Route = createFileRoute("/_authenticated/redaction")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { title: "Redactar y revisión de disertaciones | Entraînement ÉUF | EUF pro" },
+      { title: "Redactar y revisión de disertaciones | Entraînement ÉUF | ÉUF pro" },
       {
         name: "description",
         content:
           "Evalúa tu redacción en foto o PDF según el tema y los dos textos de práctica ÉUF, o solicita orientación independiente sobre una disertación.",
       },
-      { property: "og:title", content: "Redactar y revisión de disertaciones — ÉUF | EUF pro" },
+      { property: "og:title", content: "Redactar y revisión de disertaciones — ÉUF | ÉUF pro" },
       {
         property: "og:description",
         content: "Evaluación ÉUF vinculada al tema y los textos, y orientación de literatura independiente para planes activos.",

@@ -24,13 +24,13 @@ export const Route = createFileRoute("/_authenticated/progres")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { title: "Mi progreso en la dissertation critique | ÉUF | EUF pro" },
+      { title: "Mi progreso en la dissertation critique | ÉUF | ÉUF pro" },
       {
         name: "description",
         content:
           "Historial de ensayos, evolución por criterio, palabras escritas y errores de lengua para medir tu preparación a la épreuve uniforme de français.",
       },
-      { property: "og:title", content: "Mi progreso — ÉUF | EUF pro" },
+      { property: "og:title", content: "Mi progreso — ÉUF | ÉUF pro" },
       {
         property: "og:description",
         content: "Gráficas de evolución por criterio y detalle de cada dissertation.",
