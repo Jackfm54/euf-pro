@@ -108,3 +108,23 @@ export const cancelStudentPlan = createServerFn({ method: "POST" })
     if (error) throw new Error("Cancellation unavailable");
     return { ok: true };
   });
+
+
+// Suppression définitive du compte (obligatoire pour Apple/Google et Loi 25).
+export const deleteMyAccount = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ confirm: z.string().max(40) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { isDeleteConfirmed } = await import("./legal");
+    if (!isDeleteConfirmed(data.confirm)) throw new Error("Confirmation required");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const id = context.userId;
+    for (const table of ["progress_records", "evaluation_usage", "evaluation_allowances", "professor_review_usage", "professor_entitlements", "user_roles"] as const) {
+      await supabaseAdmin.from(table).delete().eq("user_id", id);
+    }
+    await supabaseAdmin.from("app_errors").update({ user_id: null }).eq("user_id", id);
+    await supabaseAdmin.from("profiles").delete().eq("id", id);
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(id);
+    if (error) throw new Error("Account deletion failed");
+    return { ok: true };
+  });

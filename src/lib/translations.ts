@@ -9,6 +9,19 @@ export function isLanguage(value: unknown): value is Language {
   return value === "es" || value === "fr" || value === "ar";
 }
 export const translations: Record<string, Record<Language, string>> = {
+  "Documento legal disponible en francés.": { es: "Documento legal disponible en francés.", fr: "Document juridique rédigé en français.", ar: "هذه الوثيقة القانونية متوفرة باللغة الفرنسية." },
+  "Herramienta independiente, no afiliada al Ministerio. Las notas de la IA son estimaciones.": { es: "Herramienta independiente, no afiliada al Ministerio. Las notas de la IA son estimaciones.", fr: "Outil indépendant, non affilié au Ministère. Les notes de l'IA sont des estimations.", ar: "أداة مستقلة غير تابعة للوزارة. درجات الذكاء الاصطناعي تقديرية." },
+  "Privacidad": { es: "Privacidad", fr: "Confidentialité", ar: "الخصوصية" },
+  "Condiciones": { es: "Condiciones", fr: "Conditions d'utilisation", ar: "شروط الاستخدام" },
+  "Política de privacidad": { es: "Política de privacidad", fr: "Politique de confidentialité", ar: "سياسة الخصوصية" },
+  "Acepto las": { es: "Acepto las", fr: "J'accepte les", ar: "أوافق على" },
+  "y la": { es: "y la", fr: "et la", ar: "و" },
+  ". Entiendo que mis redacciones se envían a un servicio de IA.": { es: ". Entiendo que mis redacciones se envían a un servicio de IA.", fr: ". Je comprends que mes rédactions sont transmises à un service d'IA.", ar: ". أفهم أن نصوصي تُرسل إلى خدمة ذكاء اصطناعي." },
+  "Debes aceptar las condiciones y la política de privacidad.": { es: "Debes aceptar las condiciones y la política de privacidad.", fr: "Vous devez accepter les conditions et la politique de confidentialité.", ar: "يجب الموافقة على الشروط وسياسة الخصوصية." },
+  "Eliminar mi cuenta": { es: "Eliminar mi cuenta", fr: "Supprimer mon compte", ar: "حذف حسابي" },
+  "Se borrarán definitivamente tu cuenta, tus redacciones y tu progreso. Esta acción no se puede deshacer.": { es: "Se borrarán definitivamente tu cuenta, tus redacciones y tu progreso. Esta acción no se puede deshacer.", fr: "Votre compte, vos rédactions et votre progression seront supprimés définitivement. Cette action est irréversible.", ar: "سيتم حذف حسابك ونصوصك وتقدمك نهائيًا. لا يمكن التراجع عن هذا الإجراء." },
+  "Escribe {word} para confirmar": { es: "Escribe {word} para confirmar", fr: "Tapez {word} pour confirmer", ar: "اكتب {word} للتأكيد" },
+  "No se pudo eliminar la cuenta. Inténtalo de nuevo.": { es: "No se pudo eliminar la cuenta. Inténtalo de nuevo.", fr: "Impossible de supprimer le compte. Réessayez.", ar: "تعذّر حذف الحساب. حاول مرة أخرى." },
   "15 temas con textos completos: 4 oficiales y 11 de práctica con dos textos de dominio público.": { es: "15 temas con textos completos: 4 oficiales y 11 de práctica con dos textos de dominio público.", fr: "15 sujets avec textes complets : 4 officiels et 11 exercices de comparaison avec deux textes du domaine public.", ar: "١٥ موضوعًا بنصوص كاملة: ٤ رسمية و١١ تدريبًا للمقارنة، لكل منها نصان من الملكية العامة." },
   "Sujet de pratique": { es: "Tema de práctica", fr: "Sujet de pratique", ar: "موضوع تدريبي" },
   "Sujet de pratique — textes du domaine public ; énoncé original, non officiel.": { es: "Tema de práctica — textos de dominio público; pregunta original, no oficial.", fr: "Sujet de pratique — textes du domaine public ; énoncé original, non officiel.", ar: "موضوع تدريبي — نصوص من الملكية العامة؛ سؤال أصلي غير رسمي." },
