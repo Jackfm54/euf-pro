@@ -9,6 +9,7 @@ import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LEGAL_VERSION } from "@/lib/legal";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({ next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") && !s.next.includes("\\") ? s.next : "/" }),
@@ -24,16 +25,18 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [accepted, setAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => { if (user) void navigate({ to: next, replace: true }); }, [user, next, navigate]);
   async function submit(e: React.FormEvent) {
     e.preventDefault(); setMessage("");
     if (!z.string().email().max(255).safeParse(email).success || (mode !== "forgot" && password.length < 8)) { setMessage("Introduce un correo válido y una contraseña de al menos 8 caracteres."); return; }
+    if (mode === "signup" && !accepted) { setMessage("Debes aceptar las condiciones y la política de privacidad."); return; }
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: name.trim().slice(0,100) }, emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(next)}` } });
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: name.trim().slice(0,100), terms_version: LEGAL_VERSION, terms_accepted_at: new Date().toISOString() }, emailRedirectTo: `${window.location.origin}/auth?next=${encodeURIComponent(next)}` } });
         // Supabase no devuelve error si el correo ya existe: devuelve un usuario sin "identities".
         if (error) setMessage(/rate limit/i.test(error.message) ? "Demasiados intentos. Espera unos minutos e inténtalo de nuevo." : "No se pudo crear la cuenta. Inténtalo de nuevo.");
         else if (data.user && (data.user.identities?.length ?? 0) === 0) setMessage("La cuenta que intentas crear ya existe. Usa otro correo o inicia sesión.");
@@ -52,6 +55,7 @@ function AuthPage() {
       {mode === "signup" && <div className="space-y-2"><Label htmlFor="name">{t("Nombre")}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} maxLength={100} required autoComplete="name" /></div>}
       <div className="space-y-2"><Label htmlFor="email">{t("Correo electrónico")}</Label><Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required maxLength={255} autoComplete="email" dir="ltr" /></div>
       {mode !== "forgot" && <div className="space-y-2"><Label htmlFor="password">{t("Contraseña")}</Label><Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} autoComplete={mode === "signup" ? "new-password" : "current-password"} /></div>}
+      {mode === "signup" && <label className="flex items-start gap-2 text-sm"><input type="checkbox" className="mt-1 size-4" checked={accepted} onChange={e => setAccepted(e.target.checked)} required /><span>{t("Acepto las")} <Link to="/conditions" className="underline">{t("Condiciones")}</Link> {t("y la")} <Link to="/confidentialite" className="underline">{t("Política de privacidad")}</Link>{t(". Entiendo que mis redacciones se envían a un servicio de IA.")}</span></label>}
       {message && <p role="status" className="text-sm text-muted-foreground">{t(message)}</p>}
       <Button type="submit" disabled={busy} className="w-full">{mode === "signup" ? <UserPlus /> : <LogIn />}{t(busy ? "Procesando…" : mode === "signup" ? "Crear cuenta" : mode === "forgot" ? "Enviar enlace" : "Iniciar sesión")}</Button>
     </form>
