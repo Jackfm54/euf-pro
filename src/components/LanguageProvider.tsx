@@ -2,15 +2,15 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { isLanguage, LANGUAGE_STORAGE_KEY, translate, type Language } from "@/lib/translations";
 
 const LanguageContext = createContext({
-  language: "es" as Language,
+  language: "fr" as Language,
   direction: "ltr" as "ltr" | "rtl",
-  locale: "es-CA",
+  locale: "fr-CA",
   setLanguage: (_language: Language) => {},
-  t: (text: string, values?: Record<string, string | number>) => translate("es", text, values),
+  t: (text: string, values?: Record<string, string | number>) => translate("fr", text, values),
 });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, updateLanguage] = useState<Language>("es");
+  const [language, updateLanguage] = useState<Language>("fr");
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);

@@ -59,6 +59,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
 
+      <footer className="border-t border-border/70">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>{t("Herramienta independiente, no afiliada al Ministerio. Las notas de la IA son estimaciones.")}</p>
+          <nav className="flex gap-4"><Link to="/confidentialite" className="underline">{t("Privacidad")}</Link><Link to="/conditions" className="underline">{t("Condiciones")}</Link></nav>
+        </div>
+      </footer>
+
        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
         <div className="grid grid-cols-6">
           {NAV.map(({ to, label, icon: Icon }) => (
