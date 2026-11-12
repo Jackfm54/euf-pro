@@ -5,13 +5,13 @@ import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { PLAN_TIERS, PLAN_CURRENCY } from "@/lib/plans";
 export const Route = createFileRoute("/planes")({
-  head: () => ({ meta: [{ title: "Forfaits en dollars canadiens | EUF pro" }, { name: "description", content: "Une évaluation gratuite, Étudiant à 15 CAD par mois, Sprint ÉUF à 24,99 CAD pour 60 jours et licences institutionnelles." }, { property: "og:title", content: "Forfaits ÉUF | EUF pro" }, { property: "og:description", content: "Une seule évaluation gratuite. Révision avec forfait payant. Abonnement Étudiant résiliable à tout moment." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: PlansPage,
+  head: () => ({ meta: [{ title: "Forfaits en dollars canadiens | ÉUF pro" }, { name: "description", content: "Une évaluation gratuite, Étudiant à 15 CAD par mois, Sprint ÉUF à 24,99 CAD pour 60 jours et licences institutionnelles." }, { property: "og:title", content: "Forfaits ÉUF | ÉUF pro" }, { property: "og:description", content: "Une seule évaluation gratuite. Révision avec forfait payant. Abonnement Étudiant résiliable à tout moment." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: PlansPage,
 });
 function PlansPage() {
   const { t, locale } = useLanguage();
   const money = (value: number) => new Intl.NumberFormat(locale, { style: "currency", currency: PLAN_CURRENCY }).format(value);
   return <AppShell>
-    <section className="border-b pb-7"><p className="flex items-center gap-2 text-sm font-semibold text-primary"><GraduationCap className="size-5" />EUF pro · CAD</p><h1 className="mt-3 font-display text-4xl font-bold">{t("Planes")}</h1></section>
+    <section className="border-b pb-7"><p className="flex items-center gap-2 text-sm font-semibold text-primary"><GraduationCap className="size-5" />ÉUF pro · CAD</p><h1 className="mt-3 font-display text-4xl font-bold">{t("Planes")}</h1></section>
     <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">{PLAN_TIERS.map(plan => {
       const features = plan.id === "gratuit" ? ["Una evaluación gratis por cuenta, solo en Redactar", "La revisión requiere un plan de pago"] : plan.id === "etudiant" ? ["30 consultas de IA al mes, entre evaluación y revisión", "Progreso en tu cuenta", "Cancela cuando quieras"] : plan.id === "sprint" ? ["60 consultas de IA durante 60 días, entre evaluación y revisión", "Pago único, sin renovación automática", "Progreso en tu cuenta"] : ["Licencia para grupos", "Precio y cupos a convenir"];
       return <article key={plan.id} className={`flex min-w-0 flex-col rounded-lg border bg-card p-6 shadow-soft ${plan.id === "etudiant" ? "border-primary ring-1 ring-primary" : "border-border"}`}>

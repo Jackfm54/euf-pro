@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({ next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") && !s.next.includes("\\") ? s.next : "/" }),
-  head: () => ({ meta: [{ title: "Acceso y registro | ÉUF | EUF pro" }, { name: "description", content: "Accede a tu cuenta ÉUF y a tus dos evaluaciones gratuitas." }, { property: "og:title", content: "Acceso a ÉUF | EUF pro" }, { property: "og:description", content: "Cuenta personal para practicar la prueba uniforme de francés." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  head: () => ({ meta: [{ title: "Acceso y registro | ÉUF | ÉUF pro" }, { name: "description", content: "Accede a tu cuenta ÉUF y a tus dos evaluaciones gratuitas." }, { property: "og:title", content: "Acceso a ÉUF | ÉUF pro" }, { property: "og:description", content: "Cuenta personal para practicar la prueba uniforme de francés." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AuthPage,
 });
 function AuthPage() {

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: "Recuperar contraseña | ÉUF | EUF pro" }, { name: "description", content: "Establece una nueva contraseña de acceso a ÉUF." }, { property: "og:title", content: "Recuperación de cuenta ÉUF | EUF pro" }, { property: "og:description", content: "Restablece tu contraseña con un enlace de recuperación." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  head: () => ({ meta: [{ title: "Recuperar contraseña | ÉUF | ÉUF pro" }, { name: "description", content: "Establece una nueva contraseña de acceso a ÉUF." }, { property: "og:title", content: "Recuperación de cuenta ÉUF | ÉUF pro" }, { property: "og:description", content: "Restablece tu contraseña con un enlace de recuperación." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ResetPage,
 });
 function ResetPage() {

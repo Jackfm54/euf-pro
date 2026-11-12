@@ -62,13 +62,13 @@ import {
 export const Route = createFileRoute("/guide")({
   head: () => ({
     meta: [
-      { title: "Guía completa del Guide préparatoire ÉUF | Ahuntsic | EUF pro" },
+      { title: "Guía completa del Guide préparatoire ÉUF | Ahuntsic | ÉUF pro" },
       {
         name: "description",
         content:
           "Contenido íntegro del Guide préparatoire à l'épreuve uniforme de français: informaciones generales, etapas, planes, estructura, anexos y todas las tablas oficiales.",
       },
-      { property: "og:title", content: "Guía completa ÉUF — Guide préparatoire | EUF pro" },
+      { property: "og:title", content: "Guía completa ÉUF — Guide préparatoire | ÉUF pro" },
       {
         property: "og:description",
         content:
@@ -607,7 +607,7 @@ function GuidePage() {
             </Card>
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Liste d'erreurs à éviter lors de l'EUF</CardTitle>
+                <CardTitle className="text-base">Liste d'erreurs à éviter lors de l'ÉUF</CardTitle>
               </CardHeader>
               <CardContent>
                 <Bullets items={ERREURS_A_EVITER} marker="☞" />

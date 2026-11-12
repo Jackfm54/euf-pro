@@ -15,13 +15,13 @@ export const Route = createFileRoute("/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { title: "Préparation à l'Épreuve uniforme de français | Montréal | EUF pro" },
+      { title: "Préparation à l'Épreuve uniforme de français | Montréal | ÉUF pro" },
       {
         name: "description",
         content:
           "Practica la dissertation critique de 900 palabras en 4 h 30 y evalúa tu progreso según los tres criterios oficiales de la épreuve uniforme de français.",
       },
-      { property: "og:title", content: "Préparation à l'Épreuve uniforme de français | EUF pro" },
+      { property: "og:title", content: "Préparation à l'Épreuve uniforme de français | ÉUF pro" },
       {
         property: "og:description",
         content:

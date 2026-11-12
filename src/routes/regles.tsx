@@ -17,13 +17,13 @@ export const Route = createFileRoute("/regles")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { title: "Reglas oficiales de la Épreuve uniforme de français | EUF pro" },
+      { title: "Reglas oficiales de la Épreuve uniforme de français | ÉUF pro" },
       {
         name: "description",
         content:
           "Duración, número de palabras, criterios de corrección, obras de referencia permitidas y fechas oficiales de la épreuve uniforme de français del MES.",
       },
-      { property: "og:title", content: "Reglas oficiales de la ÉUF | EUF pro" },
+      { property: "og:title", content: "Reglas oficiales de la ÉUF | ÉUF pro" },
       {
         property: "og:description",
         content:
