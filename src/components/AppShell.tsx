@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur">
         <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 py-3 sm:flex sm:justify-between">
           <Link to="/" className="flex min-w-0 items-center gap-3">
-            <img src="/icons/euf-192.png" alt="ÉUF pro" className="h-10 w-10 shrink-0" />
+            <img src="/icons/euf-192.png" alt="ÉUF pro" className="h-10 w-10 shrink-0 rounded-2xl" />
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-bold">
                 ÉUF pro
