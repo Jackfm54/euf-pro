@@ -73,19 +73,19 @@ function AdminPage() {
     <p className="mt-2 text-sm text-muted-foreground">{t("Los pagos aún no están activos: los planes de pago se asignan a mano.")}</p>
 
     <h2 className="mt-10 text-xl font-bold">{t("Usuarios")}</h2>
-    <div className="mt-3 overflow-x-auto"><table className="w-full text-sm"><thead><tr className="border-b">
+    <div className="mt-3 overflow-x-auto"><table className="w-full min-w-[900px] text-sm [&_td]:px-3 [&_td]:py-3 [&_td]:align-top [&_th]:whitespace-nowrap [&_th]:bg-muted/50 [&_th]:px-3 [&_th]:py-3"><thead><tr className="border-b">
       <th className="py-3 text-start">{t("Nombre")}</th><th className="text-start">{t("Correo")}</th><th className="text-start">{t("Plan")}</th><th className="text-end">{t("Valor")}</th><th className="text-start">{t("Fecha")}</th><th className="text-start">{t("Último acceso")}</th><th className="text-end">{t("Usadas")}</th><th className="text-end">{t("Restantes")}</th><th className="text-end">{t("Fallidas")}</th><th className="text-end">{t("Revisiones")}</th>
-    </tr></thead><tbody>{data.users.map((u) => <tr key={u.id} className="border-b">
-      <td className="py-3">{u.name || "—"}</td><td dir="ltr" className="text-start">{u.email || "—"}</td>
+    </tr></thead><tbody>{data.users.map((u) => <tr key={u.id} className="border-b even:bg-muted/30">
+      <td className="py-3">{u.name || "—"}</td><td dir="ltr" className="whitespace-nowrap text-start">{u.email || "—"}</td>
       <td className="whitespace-nowrap">{t(tierLabel[u.plan.tier])}{u.plan.period ? ` · ${t(u.plan.period === "monthly" ? "Mensual" : u.plan.period === "one_time" ? "Pago único · 60 días" : "A convenir")}` : ""}</td>
       <td className="text-end whitespace-nowrap">{u.plan.price === null ? t("A convenir") : money(u.plan.price)}</td>
-      <td>{new Date(u.createdAt).toLocaleDateString(locale)}</td><td>{u.lastSeen ? d(u.lastSeen) : "—"}</td>
+      <td className="whitespace-nowrap">{new Date(u.createdAt).toLocaleDateString(locale)}</td><td className="whitespace-nowrap">{u.lastSeen ? d(u.lastSeen) : "—"}</td>
       <td className="text-end">{u.used}</td><td className="text-end">{u.remaining}</td><td className="text-end">{u.failed}</td><td className="text-end">{u.reviews}</td>
     </tr>)}</tbody></table></div>
 
     <h2 className="mt-10 text-xl font-bold">{t("Fallas recientes (30 días)")}</h2>
     {data.errors.length === 0 ? <p className="mt-3 text-muted-foreground">{t("Sin fallas registradas.")}</p> :
-    <div className="mt-3 overflow-x-auto"><table className="w-full text-sm"><thead><tr className="border-b">
+    <div className="mt-3 overflow-x-auto"><table className="w-full min-w-[900px] text-sm [&_td]:px-3 [&_td]:py-3 [&_td]:align-top [&_th]:whitespace-nowrap [&_th]:bg-muted/50 [&_th]:px-3 [&_th]:py-3"><thead><tr className="border-b">
       <th className="py-3 text-start">{t("Fecha")}</th><th className="text-start">{t("Correo")}</th><th className="text-start">{t("Tipo")}</th><th className="text-start">{t("Detalle")}</th>
     </tr></thead><tbody>{data.errors.map((e) => <tr key={e.id} className="border-b align-top">
       <td className="py-3 whitespace-nowrap">{d(e.created_at)}</td><td dir="ltr" className="text-start">{e.email || "—"}</td><td>{e.source}{e.status ? ` (${e.status})` : ""}</td><td dir="ltr" className="text-start break-words">{e.message}</td>
