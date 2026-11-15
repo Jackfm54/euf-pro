@@ -7,10 +7,15 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 
 const options = queryOptions({ queryKey: ["administration"], queryFn: () => getAdministration() });
 
+function AdminError() {
+  const { t } = useLanguage();
+  return <AppShell><h1 className="text-2xl font-bold">{t("Acceso no autorizado")}</h1></AppShell>;
+}
+
 export const Route = createFileRoute("/_authenticated/administracion")({
   loader: ({ context }) => context.queryClient.ensureQueryData(options),
   head: () => ({ meta: [{ title: "Administración | ÉUF" }, { name: "description", content: "Administración segura de las cuentas de ÉUF." }, { property: "og:title", content: "Administración ÉUF" }, { property: "og:description", content: "Acceso exclusivo para administradores autorizados." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
-  errorComponent: () => { const { t } = useLanguage(); return <AppShell><h1 className="text-2xl font-bold">{t("Acceso no autorizado")}</h1></AppShell>; },
+  errorComponent: AdminError,
   component: AdminPage,
 });
 
