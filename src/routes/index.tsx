@@ -1,7 +1,7 @@
 import { translate } from "@/lib/translations";
 import { useLanguage } from "@/components/LanguageProvider";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, Clock, PenLine, Target, TrendingUp } from "lucide-react";
+import { CalendarDays, Clock, PenLine, Target, TrendingUp, BookOpenText, LifeBuoy } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,13 +56,13 @@ function Index() {
 
   return (
     <AppShell>
-      <section className="overflow-hidden rounded-3xl bg-hero p-8 text-primary-foreground shadow-lift sm:p-12">
+      <section className="overflow-hidden rounded-3xl bg-hero p-6 text-primary-foreground shadow-lift sm:p-12">
         <Badge className="border-0 bg-accent-gradient text-accent-foreground">
           Épreuve uniforme de français · DEC
         </Badge>
-        <h1 className="mt-4 max-w-2xl text-3xl font-bold leading-tight sm:text-5xl">{t("Prepara tu dissertation critique con las reglas oficiales")}</h1>
+        <h1 className="mt-4 max-w-2xl text-2xl font-bold leading-tight sm:text-5xl">{t("Prepara tu dissertation critique con las reglas oficiales")}</h1>
         <p className="mt-4 max-w-2xl text-sm opacity-90 sm:text-base">{t("900 palabras, 4 h 30, tres criterios que debes aprobar con cote C (60 %). Escribe con cronómetro, autoevalúate con la grille de correction y sigue tu progreso ensayo tras ensayo.")}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-6 grid gap-3 sm:mt-8 sm:flex sm:flex-wrap">
           <Button asChild size="lg" variant="secondary">
             <Link to="/redaction" search={{ sujet: undefined }}>
               <PenLine />{t("Empezar una redacción")}</Link>
@@ -76,7 +76,7 @@ function Index() {
             <Link to="/sujets">{t("Ver los sujets")}</Link>
           </Button>
         </div>
-        <div className="mt-8 flex flex-wrap gap-6 text-sm">
+        <div className="mt-6 grid gap-2 text-sm sm:mt-8 sm:flex sm:flex-wrap sm:gap-6">
           <span className="flex items-center gap-2">
             <Clock className="h-4 w-4" /> {REGLES.duree} {t("de examen")}
           </span>
@@ -88,6 +88,23 @@ function Index() {
             {new Date(`${date}T12:00:00Z`).toLocaleDateString(locale, { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" })})
           </span>
         </div>
+      </section>
+
+      <section className="mt-6 grid grid-cols-2 gap-3 lg:hidden">
+        <Link to="/redaction" search={{ sujet: undefined }} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 font-semibold shadow-soft">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><PenLine className="h-5 w-5" /></span>
+          <span className="min-w-0 truncate">{t("Redactar")}</span>
+        </Link>
+        {([
+          { to: "/sujets", label: "Sujets", icon: BookOpenText },
+          { to: "/guide", label: "Ayuda", icon: LifeBuoy },
+          { to: "/progres", label: "Progreso", icon: TrendingUp },
+        ] as const).map(({ to, label, icon: Icon }) => (
+          <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 font-semibold shadow-soft">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><Icon className="h-5 w-5" /></span>
+            <span className="min-w-0 truncate">{t(label)}</span>
+          </Link>
+        ))}
       </section>
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
