@@ -119,6 +119,8 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     if (!isDeleteConfirmed(data.confirm)) throw new Error("Confirmation required");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const id = context.userId;
+    // Recordar que este correo ya usó su prueba gratis (antes de borrar el historial).
+    await supabaseAdmin.rpc("remember_free_trial" as never, { _user_id: id } as never);
     for (const table of ["progress_records", "evaluation_usage", "evaluation_allowances", "professor_review_usage", "professor_entitlements", "user_roles"] as const) {
       await supabaseAdmin.from(table).delete().eq("user_id", id);
     }
