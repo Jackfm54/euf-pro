@@ -37,4 +37,6 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  // El formato no bloquea la publicación; se corrige con "bun run format".
+  { rules: { "prettier/prettier": "warn" } },
 );
