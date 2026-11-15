@@ -1,7 +1,7 @@
 import { translate } from "@/lib/translations";
 import { useLanguage } from "@/components/LanguageProvider";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, Clock, PenLine, Target, TrendingUp, BookOpenText, LifeBuoy } from "lucide-react";
+import { CalendarDays, Clock, PenLine, Target, TrendingUp } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -88,23 +88,6 @@ function Index() {
             {new Date(`${date}T12:00:00Z`).toLocaleDateString(locale, { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" })})
           </span>
         </div>
-      </section>
-
-      <section className="mt-6 grid grid-cols-2 gap-3 lg:hidden">
-        <Link to="/redaction" search={{ sujet: undefined }} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 font-semibold shadow-soft">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><PenLine className="h-5 w-5" /></span>
-          <span className="min-w-0 truncate">{t("Redactar")}</span>
-        </Link>
-        {([
-          { to: "/sujets", label: "Sujets", icon: BookOpenText },
-          { to: "/guide", label: "Ayuda", icon: LifeBuoy },
-          { to: "/progres", label: "Progreso", icon: TrendingUp },
-        ] as const).map(({ to, label, icon: Icon }) => (
-          <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 font-semibold shadow-soft">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><Icon className="h-5 w-5" /></span>
-            <span className="min-w-0 truncate">{t(label)}</span>
-          </Link>
-        ))}
       </section>
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
