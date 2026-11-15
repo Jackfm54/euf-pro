@@ -35,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="block truncate font-display text-base font-bold">
                 ÉUF pro
               </span>
-              <span className="block truncate text-xs text-muted-foreground">
+              <span className="hidden truncate text-xs text-muted-foreground sm:block">
                  {t("Dissertation critique · Montréal")}
               </span>
             </span>
