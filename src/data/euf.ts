@@ -181,10 +181,10 @@ export const SUJETS: Sujet[] = [
     epoque: "XXIe siècle — récits autobiographiques et écritures migrantes",
     cahier: "Épreuve uniforme de français — 14 décembre 2022, cahier 3",
     pistes: [
-      "Comparar el deseo de escuela: la insistencia de Caroline ante su familia y las trampas de Salie.",
-      "Analizar el papel de los adultos: los padres que ceden vs. la abuela y monsieur Ndétare.",
-      "Observar la narración autobiográfica al « je » y el tono (humor, enumeraciones, anáforas).",
-      "Matizar: mismo deseo de aprender, pero contextos sociales y obstáculos muy distintos.",
+      "Comparer le désir d'école : l'insistance de Caroline auprès de sa famille et les ruses de Salie.",
+      "Analyser le rôle des adultes : les parents qui cèdent face à la grand-mère et à monsieur Ndétare.",
+      "Observer la narration autobiographique au « je » et le ton (humour, énumérations, anaphores).",
+      "Nuancer : même désir d'apprendre, mais contextes sociaux et obstacles très différents.",
     ],
     extraits: [
       {
@@ -251,10 +251,10 @@ export const SUJETS: Sujet[] = [
     epoque: "XXe siècle — théâtre contemporain, écriture de l'intime",
     cahier: "Épreuve uniforme de français — 14 décembre 2022, cahier 3",
     pistes: [
-      "Estudiar la fuga y la huida: « je me suis enfui », « courir devant la Mort ».",
-      "Analizar la personificación de la Mort como compañera elegante y el « à quoi bon ».",
-      "Observar el juego de máscaras: « je faisais semblant », « je faisais juste mine de ».",
-      "Matizar: aceptación aparente (« je me tiendrai tranquille ») frente a la angustia confesada.",
+      "Étudier la fuite : « je me suis enfui », « courir devant la Mort ».",
+      "Analyser la personnification de la Mort en compagne élégante et le « à quoi bon ».",
+      "Observer le jeu des masques : « je faisais semblant », « je faisais juste mine de ».",
+      "Nuancer : acceptation apparente (« je me tiendrai tranquille ») face à l'angoisse avouée.",
     ],
     extraits: [
       {
@@ -293,10 +293,10 @@ export const SUJETS: Sujet[] = [
     epoque: "XXe siècle — réalisme urbain québécois",
     cahier: "Épreuve uniforme de français — 14 décembre 2022, cahier 3",
     pistes: [
-      "Comparar el conflicto interior de los dos hombres frente a la diferencia de clase social.",
-      "Analizar el retrato de Jacqueline y de Florentine a través de la mirada masculina.",
-      "Estudiar el narrador omnisciente y el discours indirect libre en ambos extractos.",
-      "Matizar: atracción compartida, pero ternura admirativa en Gilbert vs. violencia y desprecio en Jean.",
+      "Comparer le conflit intérieur des deux hommes face à la différence de classe sociale.",
+      "Analyser le portrait de Jacqueline et de Florentine à travers le regard masculin.",
+      "Étudier le narrateur omniscient et le discours indirect libre dans les deux extraits.",
+      "Nuancer : attirance partagée, mais tendresse admirative chez Gilbert, violence et mépris chez Jean.",
     ],
     extraits: [
       {
