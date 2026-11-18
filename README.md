@@ -1,6 +1,6 @@
 # EUF Pro
 
-**Plateforme de préparation à l'Épreuve uniforme de français (ÉUF) du Québec.**
+**Plateforme de préparation à l'Épreuve uniforme de français (ÉUF) du Québec.** 
 
 EUF Pro accompagne la pratique de la dissertation avec des sujets, des extraits de lecture, une évaluation assistée par IA et un suivi de progression. L'application accepte des photos et des PDF et propose des explications en français, espagnol et arabe. Les textes d'examen restent en français.
 
