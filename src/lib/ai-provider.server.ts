@@ -12,7 +12,7 @@ export function supportsReasoning(model: string): boolean {
 
 export function openAIOptions(model: string = resolveAIModel()) {
   return supportsReasoning(model)
-    ? { forceReasoning: true, reasoningEffort: "medium" as const, reasoningSummary: "auto" as const, store: false, include: ["reasoning.encrypted_content"] }
+    ? { forceReasoning: true, reasoningEffort: "high" as const, reasoningSummary: "auto" as const, store: false, include: ["reasoning.encrypted_content"] }
     : { store: false };
 }
 
