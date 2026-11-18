@@ -1,0 +1,56 @@
+import { createOpenAI } from "@ai-sdk/openai";
+
+// Le nom du modèle vient de Vercel (AI_MODEL). On accepte aussi la forme
+// lisible (« GPT-6.2 Astra ») : on la met en minuscules et en identifiant.
+export function resolveAIModel() {
+  const raw = process.env.AI_MODEL?.trim();
+  if (!raw) return "gpt-4o-mini";
+  return raw.toLowerCase().replace(/\s+/g, "-");
+}
+
+// Seuls les modèles à raisonnement (gpt-5 et suivants, o1/o3/o4…) acceptent les
+// options de raisonnement ; avec gpt-4o / gpt-4o-mini OpenAI rejette la requête.
+export function supportsReasoning(model: string): boolean {
+  const id = model.trim().toLowerCase().replace(/^[a-z0-9_.-]+\//, "");
+  return /^(gpt-[5-9]|o\d)/.test(id);
+}
+
+export function openAIOptions(model: string = resolveAIModel()) {
+  return supportsReasoning(model)
+    ? { forceReasoning: true, reasoningEffort: "high" as const, reasoningSummary: "auto" as const, store: false, include: ["reasoning.encrypted_content"] }
+    : { store: false };
+}
+
+export function createEvaluationModel(apiKey: string) {
+  const provider = createOpenAI({ apiKey });
+  return { model: provider.responses(resolveAIModel()) };
+}
+
+export function evaluationErrorMessage(error: unknown): string | null {
+  if (!error || typeof error !== "object") return null;
+  try {
+    const body = JSON.parse((error as { responseBody?: string }).responseBody ?? "{}");
+    const message = body.message ?? body.error?.message;
+    if (typeof message === "string") return message;
+  } catch { /* cuerpo no JSON */ }
+  const fallback = (error as { message?: unknown }).message;
+  return typeof fallback === "string" && fallback ? fallback.slice(0, 200) : null;
+}
+
+export function evaluationErrorCode(error: unknown): string {
+  if (!error || typeof error !== "object") return "inconnu";
+  const failure = error as { statusCode?: number; responseBody?: string };
+  let quota = false;
+  try {
+    const body = JSON.parse(failure.responseBody ?? "{}");
+    quota = body.error?.type === "insufficient_quota" ||
+      ["insufficient_quota", "credit_balance_exhausted"].includes(body.error?.code);
+  } catch {
+    // Unstructured provider failures keep the generic error classification.
+  }
+  if (failure.statusCode === 403) return "denied";
+  if (quota || failure.statusCode === 402) return "credits";
+  if (failure.statusCode === 429) return "limite";
+  if (failure.statusCode === 401) return "config";
+  return "inconnu";
+}
