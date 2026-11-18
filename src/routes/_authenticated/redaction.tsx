@@ -571,22 +571,62 @@ function RedactionContent() {
                 ) : null}
                 {correction && (
                   <div className="space-y-5 text-sm">
+                    {correction.priorites?.length ? (
+                      <div className="rounded-md border border-accent/40 bg-accent/10 p-3">
+                        <p className="font-semibold">{t("Tus 3 prioridades para aprobar")}</p>
+                        <ol className="mt-1 list-decimal space-y-1 ps-5">
+                          {correction.priorites.map((p) => (
+                            <li key={p}>{p}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    ) : null}
+                    {correction.pointsForts?.length ? (
+                      <div>
+                        <p className="font-semibold">{t("Puntos fuertes")}</p>
+                        <ul className="mt-1 list-disc space-y-1 ps-5 text-muted-foreground">
+                          {correction.pointsForts.map((p) => (
+                            <li key={p}>{p}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                     <div>
                       <p className="font-semibold">
                         {t("Errores detectados")} ({correction.erreurs.length})
                       </p>
-                      <ul className="mt-2 space-y-2">
-                        {correction.erreurs.map((f, i) => (
-                          <li key={i} className="rounded-md bg-muted p-2">
-                            <span dir="ltr" lang="fr" className="text-destructive">
-                              {f.extrait}
-                            </span>
-                            <p className="mt-1 text-xs text-muted-foreground">
-                              <strong>{f.type}</strong> · {f.explication}
+                      {([
+                        ["orthographe", "Errores de ortografía"],
+                        ["syntaxe", "Errores de sintaxis y puntuación"],
+                        ["vocabulaire", "Errores de vocabulario"],
+                      ] as const).map(([cat, titre]) => {
+                        const liste = correction.erreurs.filter(
+                          (f) => (f.categorie ?? "orthographe") === cat,
+                        );
+                        return (
+                          <div key={cat} className="mt-3">
+                            <p className="text-sm font-medium">
+                              {t(titre)} ({liste.length})
                             </p>
-                          </li>
-                        ))}
-                      </ul>
+                            {liste.length === 0 ? (
+                              <p className="text-xs text-muted-foreground">{t("Ninguno")}</p>
+                            ) : (
+                              <ul className="mt-2 space-y-2">
+                                {liste.map((f, i) => (
+                                  <li key={i} className="rounded-md bg-muted p-2">
+                                    <span dir="ltr" lang="fr" className="text-destructive">
+                                      {f.extrait}
+                                    </span>
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                      <strong>{f.type}</strong> · {f.explication}
+                                    </p>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                     <div>
                       <p className="font-semibold">{t("Recomendaciones")}</p>
@@ -610,6 +650,24 @@ function RedactionContent() {
                 <CardContent className="space-y-5">
                   {c.sousCriteres.map((sc) => (
                     <div key={sc.id} className="space-y-2">
+                      {(() => {
+                        const j = correction?.justifications?.[
+                          sc.id as keyof Correction["justifications"]
+                        ];
+                        return j ? (
+                          <div className="order-last space-y-1 rounded-md bg-muted p-2 text-xs text-muted-foreground">
+                            <p>
+                              <strong>{t("Lo logrado")}:</strong> {j.forces}
+                            </p>
+                            <p>
+                              <strong>{t("A mejorar")}:</strong> {j.faiblesses}
+                            </p>
+                            <p>
+                              <strong>{t("Para subir de nota")}:</strong> {j.conseil}
+                            </p>
+                          </div>
+                        ) : null;
+                      })()}
                       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                         <div className="min-w-0">
                           <Label className="text-sm">
