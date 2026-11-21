@@ -12,6 +12,20 @@ import { listProgress, importProgress } from "@/lib/progress.functions";
 import { ownedProfessorRecords } from "@/lib/progress-migration";
 import { fitsRequest, prepareUpload, UploadError } from "@/lib/upload-compress";
 
+const CRITERES_REVISION = [
+  ["sujet", "Respeto del tema de redacción"],
+  ["arguments", "Calidad de la argumentación"],
+  ["comprehension", "Comprensión de los textos e integración de conocimientos literarios"],
+  ["intro", "Introducción y conclusión"],
+  ["developpement", "Desarrollo"],
+] as const;
+
+const GROUPES_ERREURS = [
+  ["orthographe", "Errores de ortografía"],
+  ["syntaxe", "Errores de sintaxis y puntuación"],
+  ["vocabulaire", "Errores de vocabulario"],
+] as const;
+
 export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce: string; extraits: string; essayId: string; images: string[] }) {
   const { user } = useAuth();
   const { t, language } = useLanguage();
@@ -106,10 +120,45 @@ export function ProfessorReview({ enonce, extraits, essayId, images }: { enonce:
     {history.length > 0 && <div className="mt-5 border-t border-border pt-4"><h3 className="text-sm font-semibold">{t("Orientaciones guardadas")}</h3><div className="mt-2 flex flex-wrap gap-2">{history.map(row => <Button key={row.id} variant="outline" size="sm" onClick={() => { setFeedback(row.feedback); setFiles([]); setReviewId(null); }}>{new Date(row.date).toLocaleDateString()} · {row.language.toUpperCase()}</Button>)}</div></div>}
     {feedback && <div className="mt-5 space-y-5 text-sm">
       <p className="leading-relaxed">{feedback.bilan}</p>
-      <div><h3 className="font-semibold">{t("Puntos fuertes")}</h3><ul className="mt-2 list-disc space-y-1 ps-5">{feedback.pointsForts.map((point, i) => <li key={i}>{point}</li>)}</ul></div>
-      <div><h3 className="font-semibold">{t("Observaciones del profesor")}</h3><ul className="mt-2 space-y-4">{feedback.observations.map((item, i) => <li key={i} className="border-s-2 border-accent ps-3"><p className="font-medium">{item.domaine}</p><blockquote dir="ltr" lang="fr" className="mt-1 text-destructive">{item.extrait}</blockquote><p className="mt-2 text-muted-foreground">{item.explication}</p><p className="mt-2 font-medium">{item.question}</p></li>)}</ul></div>
-      <div><h3 className="font-semibold">{t("Prioridades de revisión")}</h3><ol className="mt-2 list-decimal space-y-1 ps-5">{feedback.priorites.map((point, i) => <li key={i}>{point}</li>)}</ol></div>
-      <div><h3 className="font-semibold">{t("Ejercicio propuesto")}</h3><p className="mt-2 text-muted-foreground">{feedback.exercice}</p></div>
+      {feedback.priorites.length > 0 && <div className="rounded-md border border-accent/40 bg-accent/5 p-3">
+        <h3 className="font-semibold">{t("Prioridades de revisión")}</h3>
+        <ol className="mt-2 list-decimal space-y-1 ps-5">{feedback.priorites.map((point, i) => <li key={i}>{point}</li>)}</ol>
+      </div>}
+      {feedback.pointsForts.length > 0 && <div>
+        <h3 className="font-semibold">{t("Puntos fuertes")}</h3>
+        <ul className="mt-2 list-disc space-y-1 ps-5 text-muted-foreground">{feedback.pointsForts.map((point, i) => <li key={i}>{point}</li>)}</ul>
+      </div>}
+      {feedback.analyseCriteres && <div className="space-y-3">
+        {CRITERES_REVISION.map(([id, titre]) => {
+          const item = feedback.analyseCriteres?.[id];
+          if (!item) return null;
+          return <div key={id} className="space-y-1 rounded-md bg-muted p-3 text-xs text-muted-foreground">
+            <p className="text-sm font-semibold text-foreground">{t(titre)}</p>
+            <p><strong>{t("Lo logrado")}:</strong> {item.forces}</p>
+            <p><strong>{t("A mejorar")}:</strong> {item.faiblesses}</p>
+            <p><strong>{t("Para subir de nota")}:</strong> {item.conseil}</p>
+          </div>;
+        })}
+      </div>}
+      {feedback.erreurs && <div>
+        <h3 className="font-semibold">{t("Errores detectados")} ({feedback.erreurs.length})</h3>
+        {GROUPES_ERREURS.map(([cat, titre]) => {
+          const liste = feedback.erreurs?.filter((f) => (f.categorie ?? "orthographe") === cat) ?? [];
+          return <div key={cat} className="mt-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t(titre)} ({liste.length})</p>
+            {liste.length === 0 ? <p className="mt-1 text-xs text-muted-foreground">{t("Ninguno")}</p> : <ul className="mt-1 space-y-2">{liste.map((item, i) => <li key={i} className="rounded-md border border-border bg-background p-2.5 text-xs">
+              <p dir="ltr" lang="fr" className="font-medium text-destructive">« {item.extrait} »</p>
+              <p className="mt-1 font-medium text-foreground">{item.type}</p>
+              <p className="mt-0.5 text-muted-foreground">{item.explication}</p>
+            </li>)}</ul>}
+          </div>;
+        })}
+      </div>}
+      {feedback.observations.length > 0 && <div>
+        <h3 className="font-semibold">{t("Observaciones del profesor")}</h3>
+        <ul className="mt-2 space-y-4">{feedback.observations.map((item, i) => <li key={i} className="border-s-2 border-accent ps-3"><p className="font-medium">{item.domaine}</p><blockquote dir="ltr" lang="fr" className="mt-1 text-destructive">{item.extrait}</blockquote><p className="mt-2 text-muted-foreground">{item.explication}</p><p className="mt-2 font-medium">{item.question}</p></li>)}</ul>
+      </div>}
+      {feedback.exercice && <div><h3 className="font-semibold">{t("Ejercicio propuesto")}</h3><p className="mt-2 text-muted-foreground">{feedback.exercice}</p></div>}
     </div>}
   </section>;
 }
