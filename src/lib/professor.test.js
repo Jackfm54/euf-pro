@@ -1,5 +1,12 @@
 import { expect, test } from "bun:test";
-import { FREE_PROFESSOR_REVIEWS, parseProfessorAccess, professorInputSchema, professorFeedbackSchema, professorDocumentContext } from "./professor";
+import {
+  FREE_PROFESSOR_REVIEWS,
+  normaliserFeedbackProfesseur,
+  parseProfessorAccess,
+  professorDocumentContext,
+  professorFeedbackSchema,
+  professorInputSchema,
+} from "./professor";
 import { deliverProfessorReview } from "./professor-delivery";
 
 test("professor guidance requires a server-confirmed paid entitlement", () => {
@@ -48,4 +55,23 @@ test("independent dissertation review does not impose an exam subject or its two
   expect(context).toContain("aucun sujet d'examen ni extrait officiel imposé");
   expect(context).not.toContain("SUJET FOURNI");
   expect(professorInputSchema.safeParse({ images: ["data:application/pdf;base64,YQ=="], enonce: "", extraits: "", langue: "es" }).success).toBe(true);
+});
+
+test("strict professor review merges the three language error lists and recounts faults", () => {
+  const critere = { forces: "Thèse présente", faiblesses: "Manque de nuance", conseil: "Préciser la position" };
+  const result = normaliserFeedbackProfesseur({
+    bilan: "Texte à consolider",
+    pointsForts: ["Bonne compréhension"],
+    analyseCriteres: { sujet: critere, arguments: critere, comprehension: critere, intro: critere, developpement: critere },
+    erreursVocabulaire: [{ extrait: "faire une chose", type: "Imprécision", explication: "Mot vague" }],
+    erreursSyntaxe: [{ extrait: "car il dit", type: "Ponctuation", explication: "Virgule manquante" }],
+    erreursOrthographe: [{ extrait: "les enfant", type: "Accord", explication: "Pluriel manquant" }],
+    observations: [{ extrait: "En conclusion", domaine: "Structure", explication: "Ouverture absente", question: "Quelle ouverture proposer ?" }],
+    priorites: ["Corriger les accords"],
+    exercice: "Relire les accords sujet-verbe",
+  });
+  expect(result.erreurs?.map((e) => e.categorie)).toEqual(["orthographe", "syntaxe", "vocabulaire"]);
+  expect(result.fautes).toEqual({ vocabulaire: 1, syntaxe: 1, orthographe: 1 });
+  expect(result).not.toHaveProperty("erreursVocabulaire");
+  expect(result.analyseCriteres?.sujet.conseil).toBe("Préciser la position");
 });
