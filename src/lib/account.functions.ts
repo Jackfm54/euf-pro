@@ -93,6 +93,7 @@ export const getAdministration = createServerFn({ method: "GET" })
       revenue: {
         paying: paying.length,
         free: users.length - paying.length,
+        activeTotal: Math.round(paying.reduce((a, u) => a + u.plan.activeValue, 0) * 100) / 100,
         monthly: Math.round(paying.reduce((a, u) => a + u.plan.monthlyValue, 0) * 100) / 100,
       },
       series: dailySeries({ evals: all, reviews: rev, signups: profiles.data ?? [] }, 30, now),

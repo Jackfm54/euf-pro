@@ -55,6 +55,8 @@ export const translations: Record<string, Record<Language, string>> = {
   "Usuarios de pago": { es: "Usuarios de pago", fr: "Utilisateurs payants", ar: "المستخدمون المشتركون" },
   "Usuarios gratis": { es: "Usuarios gratis", fr: "Utilisateurs gratuits", ar: "المستخدمون المجانيون" },
   "Ingreso mensual estimado": { es: "Ingreso mensual estimado", fr: "Revenu mensuel estimé", ar: "الدخل الشهري المقدّر" },
+  "Ingresos de planes activos": { es: "Ingresos de planes activos", fr: "Revenus des forfaits actifs", ar: "إيرادات الخطط النشطة" },
+  "Incluye planes activos de Étudiant (15 $/mes) y Sprint ÉUF (24,99 $ por 60 días). Los planes Cégep / Institution se acuerdan aparte.": { es: "Incluye planes activos de Étudiant (15 $/mes) y Sprint ÉUF (24,99 $ por 60 días). Los planes Cégep / Institution se acuerdan aparte.", fr: "Inclut les forfaits actifs Étudiant (15 $/mois) et Sprint ÉUF (24,99 $ pour 60 jours). Les forfaits Cégep / Institution sont établis sur mesure.", ar: "يشمل الخطط النشطة Étudiant ‏(15 $/شهر) وSprint ÉUF ‏(24.99 $ لمدة 60 يومًا). تُحدد خطط المؤسسات بالاتفاق." },
   "Planes e ingresos": { es: "Planes e ingresos", fr: "Forfaits et revenus", ar: "الخطط والإيرادات" },
   "Inteligencia artificial y revisiones": { es: "Inteligencia artificial y revisiones", fr: "Intelligence artificielle et révisions", ar: "الذكاء الاصطناعي والمراجعات" },
   "Evaluaciones con IA": { es: "Evaluaciones con IA", fr: "Évaluations par IA", ar: "تقييمات بالذكاء الاصطناعي" },
