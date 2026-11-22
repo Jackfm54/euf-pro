@@ -104,6 +104,16 @@ export const getAdministration = createServerFn({ method: "GET" })
 export const cancelStudentPlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: ent } = await supabaseAdmin
+      .from("professor_entitlements")
+      .select("stripe_subscription_id")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (ent?.stripe_subscription_id && process.env["STRIPE_SECRET_KEY"]) {
+      const { cancelStripeSubscriptionAtPeriodEnd } = await import("./stripe.server");
+      await cancelStripeSubscriptionAtPeriodEnd(ent.stripe_subscription_id);
+    }
     const { error } = await context.supabase.rpc("cancel_student_plan");
     if (error) throw new Error("Cancellation unavailable");
     return { ok: true };
@@ -119,6 +129,20 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     if (!isDeleteConfirmed(data.confirm)) throw new Error("Confirmation required");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const id = context.userId;
+    // Si tenía suscripción Stripe activa, cancelarla inmediatamente para evitar futuros cobros.
+    const { data: activeEnt } = await supabaseAdmin
+      .from("professor_entitlements")
+      .select("stripe_subscription_id")
+      .eq("user_id", id)
+      .maybeSingle();
+    if (activeEnt?.stripe_subscription_id && process.env["STRIPE_SECRET_KEY"]) {
+      try {
+        const { cancelStripeSubscriptionImmediately } = await import("./stripe.server");
+        await cancelStripeSubscriptionImmediately(activeEnt.stripe_subscription_id);
+      } catch {
+        // No bloquear el borrado de cuenta si Stripe ya canceló la suscripción.
+      }
+    }
     // Recordar que este correo ya usó su prueba gratis (antes de borrar el historial).
     await supabaseAdmin.rpc("remember_free_trial" as never, { _user_id: id } as never);
     for (const table of ["progress_records", "evaluation_usage", "evaluation_allowances", "professor_review_usage", "professor_entitlements", "user_roles"] as const) {

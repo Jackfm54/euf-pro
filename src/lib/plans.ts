@@ -1,5 +1,5 @@
 export const FREE_EVALUATIONS = 1;
-export const PAYMENTS_ENABLED = false;
+export const PAYMENTS_ENABLED = true;
 export const PLAN_CURRENCY = "CAD";
 export const PLAN_TIERS = [
   { id: "gratuit", labelKey: "Gratis", price: 0, period: "free", corrections: 1, cancellable: false },

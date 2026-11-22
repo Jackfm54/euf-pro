@@ -5,5 +5,5 @@ test("CAD prices are 0, 15 monthly, 24.99 one-time and on request", () => { expe
 test("student subscription cancellable anytime", () => { expect(PLAN_TIERS[1].cancellable).toBe(true); expect(activeEntitlement("cancelled","2027-01-01",Date.parse("2026-11-11"))).toBe(true); expect(activeEntitlement("cancelled","2026-11-01",Date.parse("2026-11-11"))).toBe(false); });
 test("sprint lasts 60 days without recurring billing", () => { expect(PLAN_TIERS[2].days).toBe(60); expect(PLAN_TIERS[2].cancellable).toBe(false); });
 test("quotas remain 30 student and 60 sprint", () => { expect(PLAN_TIERS[1].corrections).toBe(30); expect(PLAN_TIERS[2].corrections).toBe(60); });
-test("payments are not activated by this package",()=>expect(PAYMENTS_ENABLED).toBe(false));
+test("payments are enabled for Stripe checkout",()=>expect(PAYMENTS_ENABLED).toBe(true));
 test("accounts have separate record keys",()=>expect(recordKey("tentatives","a")).not.toBe(recordKey("tentatives","b")));
