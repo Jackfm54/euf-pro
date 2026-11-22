@@ -125,7 +125,7 @@ bun run test
 bun run build
 bun run start
 ```
-
+.
 Les tests couvrent notamment le fournisseur IA, la livraison des évaluations, l'accès au professeur, les traductions et les limites de fichiers. Leur présence ne remplace pas une validation réelle de l'authentification, des courriels et des appels IA dans l'environnement déployé.
 
 Pour Vercel, définir `NITRO_PRESET=vercel`. Pour un serveur Node.js, le port par défaut est 3000 ; `PORT` et `HOST` sont configurables. Consulter le [guide de déploiement](GUIA_DESPLIEGUE.md).
