@@ -70,12 +70,13 @@ function AdminPage() {
     </div>
 
     <h2 className="mt-10 text-xl font-bold">{t("Planes e ingresos")}</h2>
-    <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3">
+    <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
       <Stat label={t("Usuarios de pago")} value={data.revenue.paying} />
       <Stat label={t("Usuarios gratis")} value={data.revenue.free} />
+      <Stat label={t("Ingresos de planes activos")} value={money(data.revenue.activeTotal)} />
       <Stat label={t("Ingreso mensual estimado")} value={money(data.revenue.monthly)} />
     </div>
-    <p className="mt-2 text-sm text-muted-foreground">{t("Los pagos aún no están activos: los planes de pago se asignan a mano.")}</p>
+    <p className="mt-2 text-sm text-muted-foreground">{t("Incluye planes activos de Étudiant (15 $/mes) y Sprint ÉUF (24,99 $ por 60 días). Los planes Cégep / Institution se acuerdan aparte.")}</p>
 
     <h2 className="mt-10 text-xl font-bold">{t("Usuarios")}</h2>
     <div className="mt-3 overflow-x-auto"><table className="w-full min-w-[900px] text-sm [&_td]:px-3 [&_td]:py-3 [&_td]:align-top [&_th]:whitespace-nowrap [&_th]:bg-muted/50 [&_th]:px-3 [&_th]:py-3"><thead><tr className="border-b">
