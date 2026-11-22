@@ -78,11 +78,32 @@ export type Database = {
           },
         ]
       }
+      stripe_events: {
+        Row: {
+          event_id: string
+          processed_at: string
+          type: string
+        }
+        Insert: {
+          event_id: string
+          processed_at?: string
+          type: string
+        }
+        Update: {
+          event_id?: string
+          processed_at?: string
+          type?: string
+        }
+        Relationships: []
+      }
       professor_entitlements: {
         Row: {
           ai_denial_reason: string | null
           period_start: string | null
           plan: string
+          stripe_checkout_session_id: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
           tier: string | null
           status: string
           updated_at: string
@@ -93,6 +114,9 @@ export type Database = {
           period_start?: string | null
           ai_denial_reason?: string | null
           plan: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           tier?: string | null
           status?: string
           updated_at?: string
@@ -103,6 +127,9 @@ export type Database = {
           period_start?: string | null
           ai_denial_reason?: string | null
           plan?: string
+          stripe_checkout_session_id?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           tier?: string | null
           status?: string
           updated_at?: string
